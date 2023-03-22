@@ -6,6 +6,7 @@ import com.example.activityservice.jpa.DiaryRepository;
 import com.example.activityservice.jpa.GuestBookRepository;
 import com.example.activityservice.jpa.RunningRepository;
 import com.example.activityservice.jpa.SleepRepository;
+import com.example.activityservice.vo.Experience;
 import com.example.activityservice.vo.diary.RequestDiary;
 import com.example.activityservice.vo.diary.ResponseDiary;
 import com.example.activityservice.vo.guestBook.RequestGuestBook;
@@ -27,6 +28,8 @@ public class ServiceImpl implements ActivityService{
     SleepRepository sleepRepository;
     GuestBookRepository guestBookRepository;
     ModelMapper mapper = new ModelMapper();
+
+    Experience experience = new Experience();
 
 
     @Autowired
