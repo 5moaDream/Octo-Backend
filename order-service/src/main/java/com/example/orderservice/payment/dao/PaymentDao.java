@@ -14,11 +14,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class PaymentDao {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int payment_id;
+    private String merchant_uid;
     private int userId;
     private int itemId;
-    private int price;
+    private int amount;
 
     private LocalDateTime paymentTime;
 }
