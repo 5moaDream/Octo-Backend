@@ -2,7 +2,6 @@ package com.example.activityservice.vo.running;
 
 import com.sun.istack.NotNull;
 import lombok.Data;
-import lombok.Getter;
 
 import java.time.LocalDateTime;
 
@@ -14,4 +13,6 @@ public class RequestRunning {
     private LocalDateTime runningStartTime;
     @NotNull
     private LocalDateTime runningEndTime;
+    @NotNull
+    private float distance;
 }

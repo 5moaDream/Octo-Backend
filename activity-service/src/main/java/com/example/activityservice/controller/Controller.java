@@ -6,6 +6,7 @@ import com.example.activityservice.vo.diary.RequestDiary;
 import com.example.activityservice.vo.diary.ResponseDiary;
 import com.example.activityservice.vo.guestBook.RequestGuestBook;
 import com.example.activityservice.vo.guestBook.ResponseGuestBook;
+import com.example.activityservice.vo.running.RequestRunning;
 import com.example.activityservice.vo.running.ResponseRunning;
 import com.example.activityservice.vo.sleep.RequestSleep;
 import com.example.activityservice.vo.sleep.ResponseSleep;
@@ -92,6 +93,10 @@ public class Controller {
     public ResponseEntity<ResponseSleep> createSleep(@RequestBody RequestSleep sleep){
         //경험치 처리, 당일 수면기록 체크 필요
         ResponseSleep responseSleep = service.createSleep(sleep);
+
+        if(responseSleep == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(responseSleep);
     }
 
@@ -107,27 +112,24 @@ public class Controller {
 
     /**러닝 기록*/
     @PostMapping("/running")
-    public ResponseEntity<ResponseRunning> createRunning(){
-        //경험치 처리
-        return null;
-    }
+    public ResponseEntity<ResponseRunning> createRunning(@RequestBody RequestRunning running){
+        ResponseRunning responseRunning = service.createRunning(running);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseRunning);
 
-    /**당일 총 러닝 시간&거리 조회*/
-    @GetMapping("/total-running")
-    public ResponseEntity<ResponseRunning> findTodayTotalRunning(){
-        return null;
     }
 
     /**당일 러닝 기록 조회*/
-    @GetMapping("/today-running")
-    public ResponseEntity<List<ResponseRunning>> findTodayRunning(){
-        return null;
+    @GetMapping("/running-today/{userId}")
+    public ResponseEntity<List<ResponseRunning>> findTodayTotalRunning(@PathVariable long userId){
+        List<ResponseRunning> responseRunnings = service.findTodayRunningById(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(responseRunnings);
     }
 
     /**모든 러닝 기록 조회*/
-    @GetMapping("/running-all")
-    public ResponseEntity<ResponseRunning> findAllRunning(){
-        return null;
+    @GetMapping("/running-all/{userId}")
+    public ResponseEntity<List<ResponseRunning>> findAllRunning(@PathVariable long userId){
+        List<ResponseRunning> responseRunnings = service.findAllRunningById(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(responseRunnings);
     }
 
 
@@ -140,6 +142,6 @@ public class Controller {
     }
 
 
-
+    // 메인 화면 데이터 조회
 
 }

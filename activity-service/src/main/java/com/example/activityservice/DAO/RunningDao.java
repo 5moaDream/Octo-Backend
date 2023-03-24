@@ -15,6 +15,6 @@ public class RunningDao {
     private Long userId;
     private LocalDateTime runningStartTime;
     private LocalDateTime runningEndTime;
-    private int totalRunningTime;
-    private int distance;
+    private long totalRunningTime;
+    private float distance;
 }

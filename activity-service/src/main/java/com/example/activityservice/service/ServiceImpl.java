@@ -2,6 +2,7 @@ package com.example.activityservice.service;
 
 import com.example.activityservice.DAO.DiaryDao;
 import com.example.activityservice.DAO.GuestBookDao;
+import com.example.activityservice.DAO.RunningDao;
 import com.example.activityservice.DAO.SleepDao;
 import com.example.activityservice.jpa.DiaryRepository;
 import com.example.activityservice.jpa.GuestBookRepository;
@@ -12,6 +13,8 @@ import com.example.activityservice.vo.diary.RequestDiary;
 import com.example.activityservice.vo.diary.ResponseDiary;
 import com.example.activityservice.vo.guestBook.RequestGuestBook;
 import com.example.activityservice.vo.guestBook.ResponseGuestBook;
+import com.example.activityservice.vo.running.RequestRunning;
+import com.example.activityservice.vo.running.ResponseRunning;
 import com.example.activityservice.vo.sleep.RequestSleep;
 import com.example.activityservice.vo.sleep.ResponseSleep;
 import com.example.activityservice.vo.sleep.ResponseSleepList;
@@ -22,7 +25,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,6 +60,13 @@ public class ServiceImpl implements ActivityService{
     @Override
     public ResponseSleep createSleep(RequestSleep sleep) {
         SleepDao sleepDao = mapper.map(sleep, SleepDao.class);
+        sleepDao.setWakeUpTime(LocalDateTime.now());
+
+        sleepDao.setTotalSleepTime(ChronoUnit.MINUTES.between(sleepDao.getSleptTime(), sleepDao.getWakeUpTime()));
+
+        if(sleepDao.getTotalSleepTime() < 60)
+            return null;
+
         sleepRepository.save(sleepDao);
 
         return mapper.map(sleepDao, ResponseSleep.class);
@@ -62,9 +74,7 @@ public class ServiceImpl implements ActivityService{
 
     @Override
     public ResponseSleepList findAllSleepById(long userId) {
-        Specification<SleepDao> spec = Specification.where((root, query, builder) -> {
-            return builder.equal(root.get("userId"), userId);
-        });
+        Specification<SleepDao> spec = Specification.where((root, query, builder) -> builder.equal(root.get("userId"), userId));
 
         List<SleepDao> sleepDaos = sleepRepository.findAll(spec, Sort.by(Sort.Direction.ASC, "sleptTime"));
 
@@ -91,6 +101,71 @@ public class ServiceImpl implements ActivityService{
         }
 
         ResponseSleepList result = new ResponseSleepList(responseSleeps, weekAverage);
+
+        return result;
+    }
+
+    @Override
+    public ResponseRunning createRunning(RequestRunning running) {
+        RunningDao runningDao = mapper.map(running, RunningDao.class);
+
+        LocalDateTime start = runningDao.getRunningStartTime();
+        LocalDateTime end = runningDao.getRunningEndTime();
+
+        long totalTime = ChronoUnit.MINUTES.between(start, end);
+
+        runningDao.setTotalRunningTime(totalTime);
+
+        runningRepository.save(runningDao);
+
+        return mapper.map(runningDao, ResponseRunning.class);
+    }
+
+    @Override
+    public List<ResponseRunning> findTodayRunningById(long userId) {
+        Specification<RunningDao> spec = Specification.where((root, query, builder) -> {
+            LocalDate date = LocalDate.now();
+            LocalDate tomorrow = date.plusDays(1); // Get tomorrow's date
+            LocalDateTime startOfDay = LocalDateTime.of(date, LocalTime.MIDNIGHT);
+            LocalDateTime endOfDay = LocalDateTime.of(tomorrow, LocalTime.MIDNIGHT);
+
+            return builder.and(
+                    builder.equal(root.get("userId"), userId),
+                    builder.between(root.get("runningStartTime"), startOfDay, endOfDay)
+            );
+        });
+
+        List<RunningDao> runningDaoList =  runningRepository.findAll(spec);
+
+        List<ResponseRunning> result = runningDaoList.stream().map(
+                runningDao -> {
+                    ResponseRunning running = mapper.map(runningDao, ResponseRunning.class);
+                    running.setToday(runningDao.getRunningStartTime().toLocalDate());
+
+                    return running;
+                }
+        ).collect(Collectors.toList());
+
+        return result;
+    }
+
+    @Override
+    public List<ResponseRunning> findAllRunningById(long userId) {
+        Specification<RunningDao> spec = Specification.where((root, query, builder) -> {
+            return builder.equal(root.get("userId"), userId);
+        });
+
+        List<RunningDao> runningDaoList = runningRepository.findAll(spec);
+
+        List<ResponseRunning> result = runningDaoList.stream().map(
+                runningDao -> {
+                    ResponseRunning running = mapper.map(runningDao, ResponseRunning.class);
+                    running.setToday(runningDao.getRunningStartTime().toLocalDate());
+
+
+                    return running;
+                }
+        ).collect(Collectors.toList());
 
         return result;
     }
