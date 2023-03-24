@@ -11,5 +11,5 @@ import java.time.LocalDateTime;
 public class ResponseSleep {
     private LocalDateTime sleptTime;
     private LocalDateTime wakeUpTime;
-    private int totalSleepTime;
+    private Long totalSleepTime;
 }

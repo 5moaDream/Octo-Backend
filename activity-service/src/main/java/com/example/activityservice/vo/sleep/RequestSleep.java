@@ -12,6 +12,6 @@ public class RequestSleep {
     private Long userId;
     @NotNull
     private LocalDateTime sleptTime;
-    @NotNull
     private LocalDateTime wakeUpTime;
+    private Long totalSleepTime;
 }

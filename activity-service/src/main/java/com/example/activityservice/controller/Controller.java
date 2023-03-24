@@ -7,7 +7,9 @@ import com.example.activityservice.vo.diary.ResponseDiary;
 import com.example.activityservice.vo.guestBook.RequestGuestBook;
 import com.example.activityservice.vo.guestBook.ResponseGuestBook;
 import com.example.activityservice.vo.running.ResponseRunning;
+import com.example.activityservice.vo.sleep.RequestSleep;
 import com.example.activityservice.vo.sleep.ResponseSleep;
+import com.example.activityservice.vo.sleep.ResponseSleepList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -87,28 +89,18 @@ public class Controller {
 
     /**수면 시간 기록*/
     @PostMapping("/sleep")
-    public ResponseEntity<ResponseSleep> createSleep(){
+    public ResponseEntity<ResponseSleep> createSleep(@RequestBody RequestSleep sleep){
         //경험치 처리, 당일 수면기록 체크 필요
-        return null;
-    }
-
-    /**당일 수면 시간 조회*/
-    @GetMapping("/sleep-today")
-    public ResponseEntity<Integer> findTodaySleepTime(){
-        return null;
-    }
-
-    /**이번 주 평균 수면 시간 조회*/
-    @GetMapping("/sleep-week")
-    public ResponseEntity<Integer> findTodaySleep(){
-        return null;
+        ResponseSleep responseSleep = service.createSleep(sleep);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseSleep);
     }
 
     /**모든 수면 기록 조회*/
-    @GetMapping("sleep-all")
-    public ResponseEntity<List<ResponseSleep>> findAllSleep(){
+    @GetMapping("sleep/{userId}")
+    public ResponseEntity<ResponseSleepList> findAllSleep(@PathVariable long userId){
         //페이징
-        return null;
+        ResponseSleepList result = service.findAllSleepById(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     // 러닝

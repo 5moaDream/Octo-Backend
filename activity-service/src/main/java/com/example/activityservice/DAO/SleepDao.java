@@ -15,5 +15,5 @@ public class SleepDao {
     private Long userId;
     private LocalDateTime sleptTime;
     private LocalDateTime wakeUpTime;
-    private int totalSleepTime;     //총 분 = 72 -> 60으로 나눠서 표기
+    private Long totalSleepTime;     //총 분 = 72 -> 60으로 나눠서 표기
 }
