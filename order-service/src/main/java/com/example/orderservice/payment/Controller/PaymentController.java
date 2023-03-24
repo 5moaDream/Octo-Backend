@@ -7,11 +7,13 @@ import com.example.orderservice.payment.vo.complete.RequestPayment;
 import com.example.orderservice.payment.vo.complete.ResponseCompleteVerification;
 import com.example.orderservice.payment.vo.complete.ResponsePayment;
 import com.example.orderservice.payment.vo.prepare.ResponsePrepareVerification;
+import com.example.orderservice.payment.vo.refund.RequestRefund;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @RestController
 //@RequestMapping("/payment")
@@ -24,12 +26,14 @@ public class PaymentController {
         this.service = service;
     }
 
+    //결제내역 불러오기
 
 
     //사전 검증
     @CrossOrigin
     @PostMapping("/prepare/{amount}")
     public ResponsePrepareVerification responsePrepare(@PathVariable double amount){
+        System.out.println("사전검증");
         return service.prepareVerification(amount);
     }
 
@@ -37,6 +41,7 @@ public class PaymentController {
     @CrossOrigin
     @PostMapping("/completion")
     public ResponseEntity<ResponsePayment> completePayment(@RequestBody RequestPayment requestPayment) {
+        System.out.println("사후 검증");
         try {
             String imp_uid = requestPayment.getImp_uid();           //포트원 거래번호
             String token = requestPayment.getToken();               //엑세스 토큰
@@ -73,6 +78,42 @@ public class PaymentController {
             }
         } catch (Exception e){
             return ResponseEntity.badRequest().body(new ResponsePayment("fail", e.getMessage()));
+        }
+    }
+
+    //환불
+    @CrossOrigin
+    @PostMapping("/cancel")
+    public ResponseEntity<?> cancelPayment(@RequestBody RequestRefund requestRefund) {
+        System.out.println("환불");
+        try {
+            /* Check payment information */
+            String merchantUid = requestRefund.getMerchant_uid(); // order number received from the client
+            Optional<PaymentDao> paymentOptional = paymentRepository.findById(merchantUid);
+            if (!paymentOptional.isPresent()) {
+                return ResponseEntity.badRequest().body("Payment not found");
+            }
+            PaymentDao payment = paymentOptional.get();
+
+            /* Request a payment refund through the Port One REST API */
+            String impUid = payment.getImp_uid();
+            int amount = payment.getAmount();
+            int cancelAmount = requestRefund.getCancel_request_amount();
+
+            /* Calculate the refundable amount (= payment amount - total amount refunded) */
+            int cancelableAmount = amount - cancelAmount;
+            if (cancelableAmount <= 0) { // If the full amount has already been refunded
+                return ResponseEntity.badRequest().body("This order has already been fully refunded.");
+            }
+
+            service.refundRequest(impUid, cancelableAmount, requestRefund);
+
+            /* Synchronize refund result */
+            //환불 정보 디비에 저장
+
+            return ResponseEntity.ok("Refund requested successfully");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }

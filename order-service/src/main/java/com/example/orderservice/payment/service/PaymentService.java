@@ -1,7 +1,10 @@
 package com.example.orderservice.payment.service;
+import com.example.orderservice.payment.dao.PaymentDao;
 import com.example.orderservice.payment.vo.complete.ResponseCompleteVerification;
 import com.example.orderservice.payment.vo.prepare.ResponsePrepareVerification;
+import com.example.orderservice.payment.vo.refund.RequestRefund;
 import com.example.orderservice.payment.vo.token.ResponseTokenData;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -13,7 +16,7 @@ import java.util.Map;
 @Service
 public class PaymentService {
 
-    WebClient webClient = WebClient.create();
+    WebClient webClient = WebClient.create("https://api.iamport.kr");
 
     private final String imp_key = "7583047561780781"; // REST API key
 
@@ -22,14 +25,12 @@ public class PaymentService {
 
     /**엑세스 토큰 발급*/
     public String getAccessToken(){
-        String url = "https://api.iamport.kr/users/getToken";
-
         Map<String, Object> requestData = new HashMap<>();
         requestData.put("imp_key", imp_key); // merchant order number
         requestData.put("imp_secret", imp_secret); // scheduled payment amount
 
         String token =  webClient.post()
-                .uri(url)
+                .uri("/users/getToken")
                 .body(BodyInserters.fromValue(requestData))
                 .retrieve()
                 .bodyToMono(ResponseTokenData.class)
@@ -42,7 +43,6 @@ public class PaymentService {
 
     /**사전 검증(결제 정보 포트원에 등록)*/
     public ResponsePrepareVerification prepareVerification(double amount){
-        String url = "https://api.iamport.kr/payments/prepare";
         String token = getAccessToken();
 
         Map<String, Object> requestData = new HashMap<>();
@@ -50,7 +50,7 @@ public class PaymentService {
         requestData.put("amount", amount); // scheduled payment amount
 
         ResponsePrepareVerification result =  webClient.post()
-            .uri(url)
+            .uri("/payments/prepare")
             .header("Authorization", "Bearer " + token)
             .body(BodyInserters.fromValue(requestData))
             .retrieve()
@@ -64,7 +64,7 @@ public class PaymentService {
 
     /**사후 검증(결제내역 단건 조회)*/
     public ResponseCompleteVerification completeVerification (String imp_uid, String token){
-        String url = "https://api.iamport.kr/payments/" +imp_uid;
+        String url = "/payments/" + imp_uid;
 
         return webClient.get()
                 .uri(url)
@@ -72,5 +72,26 @@ public class PaymentService {
                 .retrieve()
                 .bodyToMono(ResponseCompleteVerification.class)
                 .block();
+    }
+
+    /**Port One RestAPI로 환불 요청*/
+    public void refundRequest(String impUid, int cancelableAmount, RequestRefund requestRefund){
+        Map<String, Object> requestData = new HashMap<>();
+        requestData.put("reason", requestRefund.getReason());
+        requestData.put("imp_uid", impUid);
+        requestData.put("amount", requestRefund.getCancel_request_amount());
+        requestData.put("checksum", cancelableAmount);
+
+
+        String responseBody = webClient
+                .post()
+                .uri("/payments/cancel")
+                .header("Authorization", "Bearer " + getAccessToken())
+                .body(BodyInserters.fromValue((requestData)))
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+
+        System.out.println(responseBody);
     }
 }
