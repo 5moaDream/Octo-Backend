@@ -1,4 +1,4 @@
-package com.example.userservice.KakaoAPI.Friends.vo;
+package com.example.userservice.Friends.vo;
 
 import lombok.Data;
 

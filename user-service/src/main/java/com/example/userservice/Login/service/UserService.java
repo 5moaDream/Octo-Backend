@@ -1,7 +1,7 @@
-package com.example.userservice.KakaoAPI.Login.service;
+package com.example.userservice.Login.service;
 
-import com.example.userservice.KakaoAPI.Login.dao.UserDAO;
-import com.example.userservice.KakaoAPI.Login.repository.UserRepository;
+import com.example.userservice.Login.dao.UserDAO;
+import com.example.userservice.Login.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,6 +24,6 @@ public class UserService {
 
         userRepository.save(user);
         log.info("새로운 회원 저장 완료");
-        return user.getId();
+        return user.getUserId();
     }
 }

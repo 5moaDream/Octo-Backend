@@ -1,9 +1,8 @@
-package com.example.userservice.KakaoAPI.Friends.service;
+package com.example.userservice.Friends.service;
 
-import com.example.userservice.KakaoAPI.Friends.vo.KakaoFriendInfo;
-import com.example.userservice.KakaoAPI.Friends.vo.ResponseKakaoFriends;
+import com.example.userservice.Friends.vo.KakaoFriendInfo;
+import com.example.userservice.Friends.vo.ResponseKakaoFriends;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.DefaultUriBuilderFactory;
@@ -12,7 +11,6 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Component
-@Slf4j
 public class KakaoFriendService {
     private final WebClient webClient = WebClient.create();
     private static final String FRIENDS_INFO_URI = "https://kapi.kakao.com/v1/api/talk/friends";

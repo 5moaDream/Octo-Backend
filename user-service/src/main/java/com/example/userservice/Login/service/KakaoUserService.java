@@ -1,6 +1,6 @@
-package com.example.userservice.KakaoAPI.Login.service;
+package com.example.userservice.Login.service;
 
-import com.example.userservice.KakaoAPI.Login.dto.ResponseKakaoUserInfo;
+import com.example.userservice.Login.dto.ResponseKakaoUserInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;

@@ -1,4 +1,4 @@
-package com.example.userservice.KakaoAPI.Login.dto;
+package com.example.userservice.Login.dto;
 
 import lombok.Data;
 
