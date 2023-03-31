@@ -31,7 +31,6 @@ public class KakaoFriendService {
                 .header("Authorization", "Bearer " + token)
                 .retrieve()
                 .bodyToMono(ResponseKakaoFriends.class)
-                .block()
-                .getFriends();
+                .block().getFriends();
     }
 }

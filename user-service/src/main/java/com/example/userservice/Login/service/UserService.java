@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -15,15 +17,17 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Transactional
-    public Long createUser(String email, String nickname, String profile) {
-        UserDAO user = UserDAO.builder()
-                .email(email)
-                .nickname(nickname)
-                .profile_image(profile)
-                .build();
+    public void createUser(String email) {
+        UserDAO user = new UserDAO();
+        user.setEmail(email);
 
         userRepository.save(user);
         log.info("새로운 회원 저장 완료");
-        return user.getUserId();
     }
+
+    public boolean findUser(String email){
+        Optional<UserDAO> user = userRepository.findById(email);
+        return user.isPresent();
+    }
+
 }

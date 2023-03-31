@@ -6,10 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Builder
 @Entity(name="USER_TB")
@@ -19,10 +16,9 @@ import javax.persistence.Id;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDAO {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
-    private Long octoId;
+    @Column(name = "EMAIL")
     private String email;
-    private String nickname;
-    private String profile_image;
+
+    @Column(name = "OCTO_ID")
+    private Long octoId;
 }

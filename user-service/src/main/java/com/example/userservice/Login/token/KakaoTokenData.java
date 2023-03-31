@@ -27,4 +27,15 @@ public class KakaoTokenData {
 
         return response.blockFirst();
     }
+
+    public String updateToken(String refreshToken){
+        String uri = TOKEN_URI + "?grant_type=refresh_token&client_id=" + CLIENT_ID + "&refresh_token=" + refreshToken;
+        Flux<KakaoToken> response = webClient.post()
+                .uri(uri)
+                .contentType(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToFlux(KakaoToken.class);
+
+        return response.blockFirst().getAccess_token();
+    }
 }
