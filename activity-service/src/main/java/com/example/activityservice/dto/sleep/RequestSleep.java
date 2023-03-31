@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Data
 public class RequestSleep {
     @NotNull
-    private String userId;
+    private String userEmail;
     @NotNull
     private LocalDateTime sleptTime;
     private LocalDateTime wakeUpTime;

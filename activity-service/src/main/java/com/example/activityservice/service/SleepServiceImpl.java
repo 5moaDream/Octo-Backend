@@ -1,20 +1,7 @@
 package com.example.activityservice.service;
 
-import com.example.activityservice.dao.DiaryDao;
-import com.example.activityservice.dao.GuestBookDao;
-import com.example.activityservice.dao.RunningDao;
 import com.example.activityservice.dao.SleepDao;
-import com.example.activityservice.repository.DiaryRepository;
-import com.example.activityservice.repository.GuestBookRepository;
-import com.example.activityservice.repository.RunningRepository;
 import com.example.activityservice.repository.SleepRepository;
-import com.example.activityservice.dto.Experience;
-import com.example.activityservice.dto.diary.RequestDiary;
-import com.example.activityservice.dto.diary.ResponseDiary;
-import com.example.activityservice.dto.guestBook.RequestGuestBook;
-import com.example.activityservice.dto.guestBook.ResponseGuestBook;
-import com.example.activityservice.dto.running.RequestRunning;
-import com.example.activityservice.dto.running.ResponseRunning;
 import com.example.activityservice.dto.sleep.RequestSleep;
 import com.example.activityservice.dto.sleep.ResponseSleep;
 import com.example.activityservice.dto.sleep.ResponseSleepList;
@@ -25,40 +12,28 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class ServiceImpl implements ActivityService{
-    RunningRepository runningRepository;
+public class SleepServiceImpl implements SleepService {
     SleepRepository sleepRepository;
-    GuestBookRepository guestBookRepository;
     ModelMapper mapper = new ModelMapper();
 
-    Experience experience = new Experience();
 
 
 
     @Autowired
-    public ServiceImpl( RunningRepository runningRepository, SleepRepository sleepRepository, GuestBookRepository guestBookRepository) {
-        this.runningRepository = runningRepository;
+    public SleepServiceImpl(SleepRepository sleepRepository) {
         this.sleepRepository = sleepRepository;
-        this.guestBookRepository = guestBookRepository;
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);   //이걸 해줘야 Id값이 변경됨
     }
-
-    //문어 레벨업 & 문어 경험치 획득 [추가 예정]
-
-    // 수면
 
     @Override
     public ResponseSleep createSleep(RequestSleep sleep) {
         SleepDao sleepDao = mapper.map(sleep, SleepDao.class);
-        sleepDao.setWakeUpTime(LocalDateTime.now());
 
         sleepDao.setTotalSleepTime(ChronoUnit.MINUTES.between(sleepDao.getSleptTime(), sleepDao.getWakeUpTime()));
 
@@ -71,8 +46,8 @@ public class ServiceImpl implements ActivityService{
     }
 
     @Override
-    public ResponseSleepList findAllSleepById(long userId) {
-        Specification<SleepDao> spec = Specification.where((root, query, builder) -> builder.equal(root.get("userId"), userId));
+    public ResponseSleepList findAllSleepById(String userEmail) {
+        Specification<SleepDao> spec = Specification.where((root, query, builder) -> builder.equal(root.get("userEmail"), userEmail));
 
         List<SleepDao> sleepDaos = sleepRepository.findAll(spec, Sort.by(Sort.Direction.ASC, "sleptTime"));
 
@@ -102,10 +77,4 @@ public class ServiceImpl implements ActivityService{
 
         return result;
     }
-
-
-
-    // 방명록
-
-
 }
