@@ -84,7 +84,7 @@ public class PaymentController {
     //환불
     @CrossOrigin
     @PostMapping("/cancel")
-    public ResponseEntity<?> cancelPayment(@RequestBody RequestRefund requestRefund) {
+    public ResponseEntity<String> cancelPayment(@RequestBody RequestRefund requestRefund) {
         System.out.println("환불");
         try {
             /* Check payment information */
