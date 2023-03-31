@@ -2,12 +2,15 @@ package com.example.activityservice.dao;
 
 import com.sun.istack.NotNull;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Data
 @Table(name = "RUNNING_TB")
+@NoArgsConstructor
 public class RunningDao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,7 +19,7 @@ public class RunningDao {
 
     @Column(name = "USER_ID")
     @NotNull
-    private String userId;
+    private String userEmail;
 
     @Column(name = "RUNNING_START_TIME")
     private LocalDateTime runningStartTime;

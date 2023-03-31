@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Data
 public class RequestRunning {
     @NotNull
-    private Long userId;
+    private String userEmail;
     @NotNull
     private LocalDateTime runningStartTime;
     @NotNull

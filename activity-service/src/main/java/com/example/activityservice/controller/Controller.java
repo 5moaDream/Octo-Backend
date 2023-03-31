@@ -44,28 +44,6 @@ public class Controller {
 
     // 러닝
 
-    /**러닝 기록*/
-    @PostMapping("/running")
-    public ResponseEntity<ResponseRunning> createRunning(@RequestBody RequestRunning running){
-        ResponseRunning responseRunning = service.createRunning(running);
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseRunning);
-
-    }
-
-    /**당일 러닝 기록 조회*/
-    @GetMapping("/running-today/{userId}")
-    public ResponseEntity<List<ResponseRunning>> findTodayTotalRunning(@PathVariable long userId){
-        List<ResponseRunning> responseRunnings = service.findTodayRunningById(userId);
-        return ResponseEntity.status(HttpStatus.OK).body(responseRunnings);
-    }
-
-    /**모든 러닝 기록 조회*/
-    @GetMapping("/running-all/{userId}")
-    public ResponseEntity<List<ResponseRunning>> findAllRunning(@PathVariable long userId){
-        List<ResponseRunning> responseRunnings = service.findAllRunningById(userId);
-        return ResponseEntity.status(HttpStatus.OK).body(responseRunnings);
-    }
-
 
     // 캘린더 조회
 

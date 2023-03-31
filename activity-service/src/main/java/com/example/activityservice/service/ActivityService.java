@@ -18,21 +18,5 @@ public interface ActivityService {
     ResponseSleep createSleep(RequestSleep sleep);
     ResponseSleepList findAllSleepById(long userId);
 
-    // 러닝 서비스
-
-    ResponseRunning createRunning(RequestRunning running);
-    List<ResponseRunning> findTodayRunningById(long userId);
-    List<ResponseRunning> findAllRunningById(long userId);
-
-
-
-
-
-
-
-
-
-
-
     // 캘린더 서비스
 }
