@@ -1,0 +1,37 @@
+#서버 실행 포트 지정
+server:
+  port: 8000
+
+#eureka client 등록
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+#eureka server에 client로 등록될 application name 지정
+spring:
+  application:
+    name: api-gateway-service
+    #gateway 설정
+    gateway:
+      #라우트 정보 등록
+      routes:
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/**
+        - id: activity-service
+          uri: lb://ACTIVITY-SERVICE
+          predicates:
+            - Path=/activity-service/**
+        - id: order-service
+          uri: lb://ORDER-SERVICE
+          predicates:
+            - Path=/order-service/**
+            -
+#Debugging setting
+logging:
+  level:
+    com.example.springcloud: DEBUG
