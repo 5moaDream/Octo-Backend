@@ -23,14 +23,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.time.LocalDateTime;
-
-import static org.mockito.BDDMockito.given;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(DiaryController.class)
@@ -53,7 +52,7 @@ class ActivityRestControllerTest {
     @Autowired
     private WebApplicationContext context;
 
-    RequestDiary requestDiary = new RequestDiary("123@email.com", "오늘은 좋은 하루였다.");
+    RequestDiary requestDiary = new RequestDiary("abc@email.com", "다이어리 내용 작성");
 
     @BeforeEach
     void setUp(RestDocumentationContextProvider restDocumentation) {
@@ -74,25 +73,22 @@ class ActivityRestControllerTest {
         @Test
         @DisplayName("다이어리 작성완료")
         void write_success() throws Exception {
-            given(diaryService.createDiary(requestDiary)).willReturn(new ResponseDiary("오늘은 좋은 하루였다.", LocalDateTime.now()));
-
-            mockMvc.perform(
-                            post("/diary")
-                                    .content(objectMapper.writeValueAsBytes(requestDiary))
-                                    .contentType(MediaType.APPLICATION_JSON))
+            mockMvc.perform(post("/diary")
+                            .content(objectMapper.writeValueAsBytes(requestDiary))
+                            .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isCreated())
                     .andDo(
-                            restDocs.document(
-                                    requestFields(
-                                            fieldWithPath("userEmail").description("유저 이메일"),
-                                            fieldWithPath("content").description("내용")
-                                    ),
-                                    responseFields(
-                                            fieldWithPath("content").description("내용"),
-                                            fieldWithPath("writeTime").description("작성 시간")
-                            )
-                    )
-            );
+                        restDocs.document(
+                            requestFields(
+                                fieldWithPath("userEmail").description("유저 이메일"),
+                                fieldWithPath("content").description("내용")
+                            ),
+                            responseFields(
+                                fieldWithPath("content").description("내용"),
+                                fieldWithPath("writeTime").description("작성 시간")
+                        )
+                        )
+                    );
         }
     }
 }

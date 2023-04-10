@@ -1,0 +1,15 @@
+[[api-user-register]]
+== 다이어리 등록(User Register API)
+
+====== 요청 형식
+include::{snippets}/write_success/http-request.adoc[]
+include::{snippets}/write_success/request-fields.adoc[]
+====== Request Body
+include::{snippets}/write_success/request-body.adoc[]
+====== 응답 형식
+include::{snippets}/write_success/http-response.adoc[]
+include::{snippets}/write_success/response-fields.adoc[]
+====== Response Body
+include::{snippets}/write_success/response-body.adoc[]
+====== Try with curl
+include::{snippets}/write_success/curl-request.adoc[]
