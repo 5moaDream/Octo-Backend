@@ -1,11 +1,15 @@
 package com.example.activityservice.dto.diary;
 
-import com.sun.istack.NotNull;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Email;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class RequestDiary {
     @NotNull
     @Email

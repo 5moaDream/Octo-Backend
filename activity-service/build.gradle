@@ -1,14 +1,17 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '2.7.9'
+	id 'org.springframework.boot' version '3.0.5'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id "org.asciidoctor.jvm.convert" version "3.3.2" //(1)
 }
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+sourceCompatibility = '17'
+
 
 configurations {
+	asciidoctorExt //(2)
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
@@ -18,9 +21,49 @@ repositories {
 	mavenCentral()
 }
 
+ext {
+	snippetsDir = file('build/generated-snippets') //(4)
+	set('springCloudVersion', "2021.0.6")
+}
+
+test {
+	outputs.dir snippetsDir //(5)
+	useJUnitPlatform()
+}
+
+asciidoctor {
+	configurations 'asciidoctorExt'	//(6)
+	baseDirFollowsSourceFile()		//(7)
+	inputs.dir snippetsDir			//(8)
+	dependsOn test					//(9)
+}
+
+asciidoctor.doFirst{
+	delete file('src/main/resources/static/docs')	//(10)
+}
+
+task copyDocument(type: Copy){	//(11)
+	dependsOn asciidoctor		//(12)
+	from file("build/docs/asciidoc")
+	into file("src/main/resources/static")
+}
+
+//build {
+//	dependsOn copyDocument
+//}
+
+bootJar {
+	dependsOn copyDocument 	//(13)
+	from ("${asciidoctor.outputDir}"){	//(14)
+		into 'static/docs'
+	}
+
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 	implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.4.2'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
 	compileOnly 'org.projectlombok:lombok'
@@ -28,8 +71,13 @@ dependencies {
 	runtimeOnly 'com.h2database:h2'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor' //(3)
+	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 }
 
-tasks.named('test') {
-	useJUnitPlatform()
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
 }

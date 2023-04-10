@@ -1,6 +1,6 @@
 package com.example.activityservice.dto.running;
 
-import com.sun.istack.NotNull;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDateTime;
