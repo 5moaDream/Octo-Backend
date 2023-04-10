@@ -42,7 +42,7 @@ public class PaymentService {
     }
 
     /**사전 검증(결제 정보 포트원에 등록)*/
-    public ResponsePrepareVerification prepareVerification(double amount){
+    public ResponsePrepareVerification prepareVerification(int amount){
         String token = getAccessToken();
 
         Map<String, Object> requestData = new HashMap<>();

@@ -1,0 +1,14 @@
+[[api-prepareVerification]]
+== 사전 검증 서비스(Prepare Verification API)
+
+====== 요청 형식
+include::{snippets}/prepareVerification/http-request.adoc[]
+====== Request Body
+include::{snippets}/prepareVerification/request-body.adoc[]
+====== 응답 형식
+include::{snippets}/prepareVerification/http-response.adoc[]
+include::{snippets}/prepareVerification/response-fields.adoc[]
+====== Response Body
+include::{snippets}/prepareVerification/response-body.adoc[]
+====== Try with curl
+include::{snippets}/prepareVerification/curl-request.adoc[]

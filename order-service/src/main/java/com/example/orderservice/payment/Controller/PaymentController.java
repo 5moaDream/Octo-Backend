@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @RestController
-//@RequestMapping("/payment")
+@RequestMapping("/payment")
 public class PaymentController {
     PaymentRepository paymentRepository;
     PaymentService service;
@@ -32,7 +32,7 @@ public class PaymentController {
     //사전 검증
     @CrossOrigin
     @PostMapping("/prepare/{amount}")
-    public ResponsePrepareVerification responsePrepare(@PathVariable double amount){
+    public ResponsePrepareVerification prepareVerification(@PathVariable int amount){
         System.out.println("사전검증");
         return service.prepareVerification(amount);
     }
