@@ -55,7 +55,7 @@ openapi3 {
     description = 'OctoDream API Specification'
     version = '0.0.1'
     format = 'yml'
-    outputFileNamePrefix = 'prepare-verification'
+    outputFileNamePrefix = 'payment-service'
     outputDirectory = 'src/main/resources/static/docs'
 }
 

@@ -1,0 +1,14 @@
+[[api-completionVerification]]
+== 사후 검증 서비스(Completion Verification API)
+
+====== 요청 형식
+include::{snippets}/completionVerification/http-request.adoc[]
+====== Request Body
+include::{snippets}/completionVerification/request-body.adoc[]
+====== 응답 형식
+include::{snippets}/completionVerification/http-response.adoc[]
+include::{snippets}/completionVerification/response-fields.adoc[]
+====== Response Body
+include::{snippets}/completionVerification/response-body.adoc[]
+====== Try with curl
+include::{snippets}/completionVerification/curl-request.adoc[]

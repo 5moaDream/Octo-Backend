@@ -16,7 +16,7 @@ public class PaymentDao {
     @Id
     private String merchant_uid;    //결제 고유번호
     private String imp_uid;         //포트원 결제번호
-    private int userId;
+    private String userEmail;
     private int itemId;
     private int amount;
 
