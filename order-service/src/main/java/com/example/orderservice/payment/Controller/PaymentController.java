@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/payment")
 public class PaymentController {
     PaymentRepository paymentRepository;
     PaymentService service;

@@ -15,22 +15,30 @@ spring:
   application:
     name: api-gateway-service
     #gateway 설정
+  cloud:
     gateway:
+      default-filters:
+        - name: GlobalFilter
       #라우트 정보 등록
       routes:
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
             - Path=/user-service/**
+          filters:
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
         - id: activity-service
           uri: lb://ACTIVITY-SERVICE
           predicates:
             - Path=/activity-service/**
+          filters:
+            - RewritePath=/activity-service/(?<segment>.*), /$\{segment}
         - id: order-service
           uri: lb://ORDER-SERVICE
           predicates:
             - Path=/order-service/**
-            -
+          filters:
+            - RewritePath=/order-service/(?<segment>.*), /$\{segment}
 #Debugging setting
 logging:
   level:
