@@ -5,7 +5,6 @@ import com.example.activityservice.dto.diary.ResponseDiary;
 import com.example.activityservice.service.DiaryServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

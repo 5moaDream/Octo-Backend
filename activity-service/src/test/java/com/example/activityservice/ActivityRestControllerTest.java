@@ -86,7 +86,7 @@ class ActivityRestControllerTest {
                             responseFields(
                                 fieldWithPath("content").description("내용"),
                                 fieldWithPath("writeTime").description("작성 시간")
-                        )
+                            )
                         )
                     );
         }
