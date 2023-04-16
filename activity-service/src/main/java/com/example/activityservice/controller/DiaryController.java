@@ -3,7 +3,7 @@ package com.example.activityservice.controller;
 import com.example.activityservice.dto.diary.RequestDiary;
 import com.example.activityservice.dto.diary.ResponseDiary;
 import com.example.activityservice.service.DiaryServiceImpl;
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

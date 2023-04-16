@@ -1,8 +1,8 @@
 package com.example.activityservice.dto.running;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
