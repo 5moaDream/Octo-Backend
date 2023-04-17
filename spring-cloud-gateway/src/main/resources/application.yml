@@ -18,7 +18,11 @@ spring:
   cloud:
     gateway:
       default-filters:
-        - name: GlobalFilter
+        - GlobalFilter
+        - JwtAuthenticationFilter
+        - JwtGatewayFilterFactory
+        - JwtAccessDeniedHandler
+
       #라우트 정보 등록
       routes:
         - id: user-service
@@ -43,3 +47,10 @@ spring:
 logging:
   level:
     com.example.springcloud: DEBUG
+
+#mili sec = sec * 1000
+#43200000 = 12시간
+#secret = 아무거나 상관없음 = 비밀 키 값
+token:
+  expiration_time: 3600000
+  secret: YzJSbWJtZHNhMnB1YzJSbVp5ZHFNMmx4Y21wbk5ETnZjR3BuYlRRek1EbHBkR2N0YXpRelp6TTFOR2RvZERRPT3jhYHjhLTjhYfjhY7jhYHjhLTjhYfjhLntmLjrgpjjhaPshJzjhZc07J=
