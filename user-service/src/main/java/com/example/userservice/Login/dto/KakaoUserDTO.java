@@ -1,11 +1,13 @@
 package com.example.userservice.Login.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 @Data
-public class ResponseKakaoUserInfo {
-    public String id; //User의 userid에 들어가기위해서 String으로 선언
-    public String connected_at; //
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class KakaoUserDTO {
+    public long id;
+    public String connected_at;
     public Properties properties;
     public KakaoAccount kakao_account;
 

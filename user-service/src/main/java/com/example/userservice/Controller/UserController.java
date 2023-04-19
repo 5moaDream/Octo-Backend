@@ -2,15 +2,12 @@ package com.example.userservice.Controller;
 
 import com.example.userservice.Friends.service.KakaoFriendService;
 import com.example.userservice.Friends.vo.KakaoFriendInfo;
-import com.example.userservice.Login.token.KakaoTokenData;
-import com.example.userservice.Login.token.KakaoToken;
+import com.example.userservice.Login.domain.UserEntity;
 import com.example.userservice.Login.service.KakaoUserService;
-import com.example.userservice.Login.dto.ResponseKakaoUserInfo;
+import com.example.userservice.Login.dto.KakaoUserDTO;
 import com.example.userservice.Login.service.UserService;
-import com.example.userservice.Login.token.ResponseToken;
-import com.example.userservice.octo.OctoRepository;
-import com.example.userservice.octo.Octopus;
-import com.example.userservice.octo.RequestOcto;
+import com.example.userservice.Login.token.requestKakaoToken;
+import com.example.userservice.Login.token.TokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -18,96 +15,59 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
 @Slf4j
 public class UserController {
-
-    private final KakaoTokenData kakaoTokenJsonData;
-    private final KakaoUserService kakaoUserInfo;
+    private final KakaoUserService kakaoUserService;
     private final KakaoFriendService kakaoFriendsInfo;
 
     private final UserService userService;
-    private final OctoRepository octoRepository;
-
+    private final TokenService tokenService;
 
     @GetMapping("/kakao-login")
-    public ResponseEntity<ResponseToken> kakaoLogin(@RequestParam("code") String code) {
-        KakaoToken kakaoTokenResponse = kakaoTokenJsonData.getToken(code);
-        ResponseToken responseToken = new ResponseToken(kakaoTokenResponse.getAccess_token(), kakaoTokenResponse.getRefresh_token());
+    public ResponseEntity<UserEntity> kakaoLogin(@RequestBody requestKakaoToken kakaoToken) {
+        //1) access token과 refresh 토큰을 받는다.
 
-        ResponseKakaoUserInfo userInfo = kakaoUserInfo.getUserInfo(kakaoTokenResponse.getAccess_token());
+        //2) access token으로 유저 정보 반환 & token 만료 시 refresh 토큰으로 재발급해서 유저정보 반환
+        KakaoUserDTO kakaoUserDTO = kakaoUserService.getUserInfo(kakaoToken);
 
-        //사용자 이메일이 디비에 없다면 생성 & 클라이언트 단에서 문어id가 null일 때 생성하는 로직
-        if(!userService.findUser(userInfo.kakao_account.email)){
-            userService.createUser(userInfo.kakao_account.email);
-            return ResponseEntity.status(HttpStatus.CREATED).body(responseToken);
-        }
+        //3) 카카오 유저 정보를 못 받아왔다면 다시 로그인 요청
+        if(kakaoUserDTO == null)
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
-        return ResponseEntity.status(HttpStatus.OK).body(responseToken);
+        //4) 카카오 유저아이디로 토큰 생성 ( 유저 아이디 )
+        String access_token = tokenService.createToken(kakaoUserDTO.getId());
+
+        //5) 카카오 유저 아이디로 DB에서 유저 정보 조회
+        UserEntity userEntity = userService.findByUserId(kakaoUserDTO.getId());
+
+        //5-1) 유저 정보가 없다면 기본 틀로 저장 => 클라이언트에서 이름 같은 정보들이 null이면 기본 설정하도록
+        if(userEntity == null)
+            userEntity = userService.createUser(kakaoUserDTO);
+
+        //6) 발급 받은 토큰들 DB에 저장 & 응답 헤더에 access token 추가
+        return ResponseEntity.status(HttpStatus.OK)
+                .header("Authorization", "Bearer " + access_token)
+                .body(userEntity);
     }
 
-    //토큰 갱신
-    //HTTP 401 응답 시 토큰 갱신 요청
-    @GetMapping("/refresh_token")
-    public ResponseEntity<String> refresh(@RequestParam("refresh_token") String refresh_token){
-        String accessToken = kakaoTokenJsonData.updateToken(refresh_token);
+    @GetMapping("/user")
+    public ResponseEntity<UserEntity> getUser(@RequestParam("userId") long userId){
+        UserEntity user = userService.findByUserId(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(user);
+    }
 
-        return ResponseEntity.status(HttpStatus.OK).body(accessToken);
+    @PutMapping("/user")
+    public HttpStatus setUser(@RequestParam("character_name") String characterName, @RequestParam("userId") long userId){
+        userService.updateUser(characterName, userId);
+        return HttpStatus.OK;
     }
 
     @GetMapping("/kakao-friends")
     public List<KakaoFriendInfo> findKakaoFriendsList(@RequestParam("token") String token, @RequestParam("offset") Integer offset){
         //토큰은 filter로 체크 -> 클라이언트에서 저장할 방법을 정해야함. ex) 쿠키, 세션
         return kakaoFriendsInfo.getFriendsInfo(token, offset);
-    }
-
-
-
-
-
-
-
-    @PostMapping("/octo")
-    public ResponseEntity createOctoById(@RequestBody RequestOcto octopus){
-        Octopus octo = new Octopus(
-                octopus.getUserId(),
-                octopus.getName(),
-                0, 0,
-                octopus.getOctoKindId()
-        );
-
-        Octopus result = octoRepository.save(octo);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(true);
-    }
-
-    @GetMapping("/octo/{octoId}")
-    public ResponseEntity<Octopus> findMainOctoById(@PathVariable Long octoId){
-        Optional<Octopus> octo = octoRepository.findById(octoId);
-
-        if(octo.get().equals(null))
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-
-        return ResponseEntity.status(HttpStatus.OK).body(octo.get());
-    }
-
-
-    @GetMapping("/octo-collection/{userId}")
-    public ResponseEntity<List<Octopus>> findAllOctoById(@PathVariable Long userId){
-        List<Octopus> octos = octoRepository.findAllOctoById(userId);
-        return ResponseEntity.status(HttpStatus.OK).body(octos);
-    }
-
-    @PutMapping("/octo-name")
-    public ResponseEntity<String> updateOctoName(){
-        return null;
-    }
-
-    @PutMapping("/octo")
-    public ResponseEntity<Octopus> updateMainOcto(){
-        return null;
     }
 }

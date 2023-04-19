@@ -3,7 +3,7 @@ package com.example.userservice.Login.token;
 import lombok.Data;
 
 @Data
-public class KakaoToken {
+public class ReissuanceKakaoToken {
     private String token_type;
     private String access_token;
     private Integer expires_in;
