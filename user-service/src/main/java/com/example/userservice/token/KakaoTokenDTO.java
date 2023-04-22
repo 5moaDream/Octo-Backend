@@ -1,9 +1,9 @@
-package com.example.userservice.Login.token;
+package com.example.userservice.token;
 
 import lombok.Data;
 
 @Data
-public class ReissuanceKakaoToken {
+public class KakaoTokenDTO {
     private String token_type;
     private String access_token;
     private Integer expires_in;

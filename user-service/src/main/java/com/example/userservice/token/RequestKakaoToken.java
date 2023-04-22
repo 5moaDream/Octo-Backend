@@ -1,11 +1,11 @@
-package com.example.userservice.Login.token;
+package com.example.userservice.token;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @AllArgsConstructor
 @Data
-public class requestKakaoToken {
+public class RequestKakaoToken {
     private String access_token;
     private String refresh_token;
 }

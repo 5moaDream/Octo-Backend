@@ -18,7 +18,7 @@ public class UserService {
 
     @Transactional
     public UserEntity createUser(KakaoUserDTO kakaoUserDTO) {
-        String default_character_url = "";
+        String default_character_url = "/Users/jeongchan-yeong/Documents/GitHub/Octo-Backend/sql/test_image/문어1.png";
 
         UserEntity user = UserEntity.builder()
                             .userId(kakaoUserDTO.getId())
@@ -31,9 +31,11 @@ public class UserService {
         return result;
     }
 
-    public UserEntity findByUserId(long userId){
+    public Optional<UserEntity> findByUserId(long userId){
+        log.info("DB에서 유저 조회 요청");
+
         Optional<UserEntity> user = userRepository.findByUserId(userId);
-        return user.get();
+        return user;
     }
 
 
