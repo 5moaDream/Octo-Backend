@@ -14,35 +14,59 @@ eureka:
 spring:
   application:
     name: api-gateway-service
-    #gateway 설정
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/OctoDream?serverTimezone=Asia/Seoul
+    username: root
+    password: Cksdud!0342
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
   cloud:
     gateway:
       default-filters:
-        - GlobalFilter
-        - JwtAuthenticationFilter
-        - JwtGatewayFilterFactory
-        - JwtAccessDeniedHandler
 
       #라우트 정보 등록
       routes:
+        #user-service
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/user
+          filters:
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+            - AuthorizationHeaderFilter
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/kakao-friends
+          filters:
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+            - AuthorizationHeaderFilter
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
             - Path=/user-service/**
           filters:
             - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+        #activity-service
         - id: activity-service
           uri: lb://ACTIVITY-SERVICE
           predicates:
             - Path=/activity-service/**
           filters:
             - RewritePath=/activity-service/(?<segment>.*), /$\{segment}
+            - AuthorizationHeaderFilter
+        #order-service
         - id: order-service
           uri: lb://ORDER-SERVICE
           predicates:
             - Path=/order-service/**
           filters:
             - RewritePath=/order-service/(?<segment>.*), /$\{segment}
+            - AuthorizationHeaderFilter
 #Debugging setting
 logging:
   level:
