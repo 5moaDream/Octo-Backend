@@ -68,8 +68,6 @@ public class TokenService implements InitializingBean {
     }
 
     public String createToken(long userId){
-        log.info("토큰 생성요청");
-
         long now = (new Date()).getTime();
         Date validity = new Date(now + expiration_time);   //만료 시간
 

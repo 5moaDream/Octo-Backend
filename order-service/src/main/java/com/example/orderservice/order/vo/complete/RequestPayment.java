@@ -1,4 +1,4 @@
-package com.example.orderservice.payment.vo.complete;
+package com.example.orderservice.order.vo.complete;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 public class RequestPayment {
     private String imp_uid;
     private String merchant_uid;
-    private String token;
-    private String userEmail;
+    private Long userId;
     private int itemId;
     private int amount;
+    private String token;
 }

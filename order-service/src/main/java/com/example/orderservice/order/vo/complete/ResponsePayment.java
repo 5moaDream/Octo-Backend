@@ -1,4 +1,4 @@
-package com.example.orderservice.payment.vo.complete;
+package com.example.orderservice.order.vo.complete;
 
 
 import lombok.AllArgsConstructor;

@@ -27,7 +27,7 @@ spring:
   cloud:
     gateway:
       default-filters:
-
+        - GlobalFilter
       #라우트 정보 등록
       routes:
         #user-service

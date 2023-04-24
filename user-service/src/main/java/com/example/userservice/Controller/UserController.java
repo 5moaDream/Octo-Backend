@@ -42,7 +42,6 @@ public class UserController {
     @GetMapping("/kakao-login")
     public ResponseEntity<UserEntity> kakaoLogin(@RequestBody RequestKakaoToken kakaoToken) {
         //토큰 디비 구축
-        log.info("로그인 요청");
         //1) access token과 refresh 토큰을 받는다.
 
         //2) access token으로 유저 정보 반환

@@ -1,39 +1,46 @@
-package com.example.orderservice.payment.Controller;
+package com.example.orderservice.order.Controller;
 
-import com.example.orderservice.payment.repository.PaymentRepository;
-import com.example.orderservice.payment.dao.PaymentDao;
-import com.example.orderservice.payment.service.PaymentService;
-import com.example.orderservice.payment.vo.complete.RequestPayment;
-import com.example.orderservice.payment.vo.complete.ResponseCompleteVerification;
-import com.example.orderservice.payment.vo.complete.ResponsePayment;
-import com.example.orderservice.payment.vo.prepare.ResponsePrepareVerification;
-import com.example.orderservice.payment.vo.refund.RequestRefund;
+import com.example.orderservice.order.entity.RefundEntity;
+import com.example.orderservice.order.repository.PaymentRepository;
+import com.example.orderservice.order.entity.PaymentEntity;
+import com.example.orderservice.order.repository.RefundRepository;
+import com.example.orderservice.order.service.PaymentService;
+import com.example.orderservice.order.vo.complete.RequestPayment;
+import com.example.orderservice.order.vo.complete.ResponseCompleteVerification;
+import com.example.orderservice.order.vo.complete.ResponsePayment;
+import com.example.orderservice.order.vo.prepare.ResponsePrepareVerification;
+import com.example.orderservice.order.vo.refund.RequestRefund;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
-public class PaymentController {
-    PaymentRepository paymentRepository;
-    PaymentService service;
-
-    public PaymentController(PaymentRepository paymentRepository, PaymentService service) {
+public class OrderController {
+    private PaymentRepository paymentRepository;
+    private PaymentService paymentService;
+    private RefundRepository refundRepository;
+    public OrderController(PaymentRepository paymentRepository, PaymentService paymentService, RefundRepository refundRepository) {
         this.paymentRepository = paymentRepository;
-        this.service = service;
+        this.paymentService = paymentService;
+        this.refundRepository = refundRepository;
     }
 
-    //결제내역 불러오기
 
+    @GetMapping("health_check")
+    public String healthCheck() {
+        return "health Check Success!";
+    }
 
     //사전 검증
     @CrossOrigin
     @PostMapping("/prepare/{amount}")
     public ResponsePrepareVerification prepareVerification(@PathVariable int amount){
-        System.out.println("사전검증");
-        return service.prepareVerification(amount);
+        return paymentService.prepareVerification(amount);
     }
 
     //결제 요청 + 사후 검증
@@ -46,18 +53,18 @@ public class PaymentController {
             String token = requestPayment.getToken();               //엑세스 토큰
 
             ModelMapper mapper = new ModelMapper();
-            PaymentDao paymentDao = mapper.map(requestPayment, PaymentDao.class);
-            paymentDao.setPaymentTime(LocalDateTime.now());         //결제요청 정보 DAO로 변환
+            PaymentEntity paymentEntity = mapper.map(requestPayment, PaymentEntity.class);
+            paymentEntity.setPaymentTime(new Date());         //결제요청 정보 DAO로 변환
 
 
             int amountToBePaid  = requestPayment.getAmount();       // 결제요청 받은 금액
 
-            ResponseCompleteVerification paymentData = service.completeVerification(imp_uid, token);    //결제 정보 조회
+            ResponseCompleteVerification paymentData = paymentService.completeVerification(imp_uid, token);    //결제 정보 조회
             int amount = paymentData.getResponse().getAmount();     // 사전 등록해둔 금액
             String status = paymentData.getResponse().getStatus();  // 결제 진행 상태
 
             if(amount == amountToBePaid){
-                paymentRepository.save(paymentDao);     //결제 정보 디비 저장
+                paymentRepository.save(paymentEntity);     //결제 정보 디비 저장
 
                 switch (status) {
                     //case "ready": // 가상계좌 계설
@@ -84,15 +91,16 @@ public class PaymentController {
     @CrossOrigin
     @PostMapping("/cancel")
     public ResponseEntity<String> cancelPayment(@RequestBody RequestRefund requestRefund) {
-        System.out.println("환불");
         try {
             /* Check payment information */
             String merchantUid = requestRefund.getMerchant_uid(); // order number received from the client
-            Optional<PaymentDao> paymentOptional = paymentRepository.findById(merchantUid);
+            Optional<PaymentEntity> paymentOptional = paymentRepository.findById(merchantUid);
+
             if (!paymentOptional.isPresent()) {
                 return ResponseEntity.badRequest().body("Payment not found");
             }
-            PaymentDao payment = paymentOptional.get();
+
+            PaymentEntity payment = paymentOptional.get();
 
             /* Request a payment refund through the Port One REST API */
             String impUid = payment.getImp_uid();
@@ -105,14 +113,31 @@ public class PaymentController {
                 return ResponseEntity.badRequest().body("This order has already been fully refunded.");
             }
 
-            service.refundRequest(impUid, cancelableAmount, requestRefund);
+            //환불 요청하기
+            paymentService.refundRequest(impUid, cancelableAmount, requestRefund);
 
             /* Synchronize refund result */
+            RefundEntity refund = new RefundEntity(payment, new Date());
             //환불 정보 디비에 저장
+            refundRepository.save(refund);
 
             return ResponseEntity.ok("Refund requested successfully");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    //결제내역 조회
+    @GetMapping("/payment")
+    public ResponseEntity<List<PaymentEntity>> findPaymentList(@RequestParam("userId") Long userId){
+        List<PaymentEntity> paymentEntityList = paymentRepository.findAllByUserId(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(paymentEntityList);
+    }
+
+    //환불내역 조회
+    @GetMapping("/refund")
+    public ResponseEntity<List<RefundEntity>> findRefundList(@RequestParam("userId") Long userId){
+        List<RefundEntity> refundEntityList = refundRepository.findByPaymentEntity_UserId(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(refundEntityList);
     }
 }
