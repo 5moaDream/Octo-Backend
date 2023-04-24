@@ -1,6 +1,6 @@
 package com.example.activityservice.service;
 
-import com.example.activityservice.dao.RunningDao;
+import com.example.activityservice.entity.RunningEntity;
 import com.example.activityservice.dto.running.RequestRunning;
 import com.example.activityservice.dto.running.ResponseRunning;
 import com.example.activityservice.repository.RunningRepository;
@@ -30,23 +30,23 @@ public class RunningServiceImpl implements RunningService{
 
     @Override
     public ResponseRunning createRunning(RequestRunning running) {
-        RunningDao runningDao = mapper.map(running, RunningDao.class);
+        RunningEntity runningEntity = mapper.map(running, RunningEntity.class);
 
-        LocalDateTime start = runningDao.getRunningStartTime();
-        LocalDateTime end = runningDao.getRunningEndTime();
+        LocalDateTime start = runningEntity.getRunningStartTime();
+        LocalDateTime end = runningEntity.getRunningEndTime();
 
         long totalTime = ChronoUnit.MINUTES.between(start, end);
 
-        runningDao.setTotalRunningTime(totalTime);
+        runningEntity.setTotalRunningTime(totalTime);
 
-        runningRepository.save(runningDao);
+        runningRepository.save(runningEntity);
 
-        return mapper.map(runningDao, ResponseRunning.class);
+        return mapper.map(runningEntity, ResponseRunning.class);
     }
 
     @Override
     public List<ResponseRunning> findTodayRunningById(String userEmail) {
-        Specification<RunningDao> spec = Specification.where((root, query, builder) -> {
+        Specification<RunningEntity> spec = Specification.where((root, query, builder) -> {
             LocalDate date = LocalDate.now();
             LocalDate tomorrow = date.plusDays(1); // Get tomorrow's date
             LocalDateTime startOfDay = LocalDateTime.of(date, LocalTime.MIDNIGHT);
@@ -58,12 +58,12 @@ public class RunningServiceImpl implements RunningService{
             );
         });
 
-        List<RunningDao> runningDaoList =  runningRepository.findAll(spec);
+        List<RunningEntity> runningEntityList =  runningRepository.findAll(spec);
 
-        List<ResponseRunning> result = runningDaoList.stream().map(
-                runningDao -> {
-                    ResponseRunning running = mapper.map(runningDao, ResponseRunning.class);
-                    running.setToday(runningDao.getRunningStartTime().toLocalDate());
+        List<ResponseRunning> result = runningEntityList.stream().map(
+                runningEntity -> {
+                    ResponseRunning running = mapper.map(runningEntity, ResponseRunning.class);
+                    running.setToday(runningEntity.getRunningStartTime().toLocalDate());
 
                     return running;
                 }
@@ -74,16 +74,16 @@ public class RunningServiceImpl implements RunningService{
 
     @Override
     public List<ResponseRunning> findAllRunningById(String userEmail) {
-        Specification<RunningDao> spec = Specification.where((root, query, builder) -> {
+        Specification<RunningEntity> spec = Specification.where((root, query, builder) -> {
             return builder.equal(root.get("userEmail"), userEmail);
         });
 
-        List<RunningDao> runningDaoList = runningRepository.findAll(spec);
+        List<RunningEntity> runningEntityList = runningRepository.findAll(spec);
 
-        List<ResponseRunning> result = runningDaoList.stream().map(
-                runningDao -> {
-                    ResponseRunning running = mapper.map(runningDao, ResponseRunning.class);
-                    running.setToday(runningDao.getRunningStartTime().toLocalDate());
+        List<ResponseRunning> result = runningEntityList.stream().map(
+                runningEntity -> {
+                    ResponseRunning running = mapper.map(runningEntity, ResponseRunning.class);
+                    running.setToday(runningEntity.getRunningStartTime().toLocalDate());
 
 
                     return running;

@@ -1,9 +1,6 @@
 package com.example.activityservice;
 
 import com.example.activityservice.controller.DiaryController;
-import com.example.activityservice.dto.diary.RequestDiary;
-import com.example.activityservice.dto.diary.ResponseDiary;
-import com.example.activityservice.service.DiaryServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -91,4 +88,6 @@ class ActivityRestControllerTest {
                     );
         }
     }
+
+
 }

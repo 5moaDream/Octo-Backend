@@ -1,6 +1,5 @@
 package com.example.activityservice.dto.activity;
 
-import com.example.activityservice.dto.diary.ResponseDiary;
 import com.example.activityservice.dto.running.ResponseRunning;
 import com.example.activityservice.dto.sleep.ResponseSleep;
 import com.fasterxml.jackson.annotation.JsonInclude;

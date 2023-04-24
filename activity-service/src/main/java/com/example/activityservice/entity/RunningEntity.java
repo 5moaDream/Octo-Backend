@@ -1,4 +1,4 @@
-package com.example.activityservice.dao;
+package com.example.activityservice.entity;
 
 import javax.validation.constraints.NotNull;
 import lombok.Data;
@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Data
 @Table(name = "RUNNING_TB")
 @NoArgsConstructor
-public class RunningDao {
+public class RunningEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "SLEEP_ID")

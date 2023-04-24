@@ -1,6 +1,6 @@
 package com.example.activityservice.service;
 
-import com.example.activityservice.dao.SleepDao;
+import com.example.activityservice.entity.SleepEntity;
 import com.example.activityservice.repository.SleepRepository;
 import com.example.activityservice.dto.sleep.RequestSleep;
 import com.example.activityservice.dto.sleep.ResponseSleep;
@@ -12,7 +12,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,27 +32,27 @@ public class SleepServiceImpl implements SleepService {
 
     @Override
     public ResponseSleep createSleep(RequestSleep sleep) {
-        SleepDao sleepDao = mapper.map(sleep, SleepDao.class);
+        SleepEntity sleepEntity = mapper.map(sleep, SleepEntity.class);
 
-        sleepDao.setTotalSleepTime(ChronoUnit.MINUTES.between(sleepDao.getSleptTime(), sleepDao.getWakeUpTime()));
+        sleepEntity.setTotalSleepTime(ChronoUnit.MINUTES.between(sleepEntity.getSleptTime(), sleepEntity.getWakeUpTime()));
 
-        if(sleepDao.getTotalSleepTime() < 60)
+        if(sleepEntity.getTotalSleepTime() < 60)
             return null;
 
-        sleepRepository.save(sleepDao);
+        sleepRepository.save(sleepEntity);
 
-        return mapper.map(sleepDao, ResponseSleep.class);
+        return mapper.map(sleepEntity, ResponseSleep.class);
     }
 
     @Override
     public ResponseSleepList findAllSleepById(String userEmail) {
-        Specification<SleepDao> spec = Specification.where((root, query, builder) -> builder.equal(root.get("userEmail"), userEmail));
+        Specification<SleepEntity> spec = Specification.where((root, query, builder) -> builder.equal(root.get("userEmail"), userEmail));
 
-        List<SleepDao> sleepDaos = sleepRepository.findAll(spec, Sort.by(Sort.Direction.ASC, "sleptTime"));
+        List<SleepEntity> sleepEntities = sleepRepository.findAll(spec, Sort.by(Sort.Direction.ASC, "sleptTime"));
 
-        List<ResponseSleep> responseSleeps = sleepDaos.stream().map(
-                sleepDao -> {
-                    ResponseSleep responseSleep = mapper.map(sleepDao, ResponseSleep.class);
+        List<ResponseSleep> responseSleeps = sleepEntities.stream().map(
+                sleepEntity -> {
+                    ResponseSleep responseSleep = mapper.map(sleepEntity, ResponseSleep.class);
                     return responseSleep;
                 }
         ).collect(Collectors.toList());

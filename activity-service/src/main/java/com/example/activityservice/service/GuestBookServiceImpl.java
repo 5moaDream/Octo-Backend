@@ -1,6 +1,6 @@
 package com.example.activityservice.service;
 
-import com.example.activityservice.dao.GuestBookDao;
+import com.example.activityservice.entity.GuestBookEntity;
 import com.example.activityservice.dto.guestBook.RequestGuestBook;
 import com.example.activityservice.dto.guestBook.ResponseGuestBook;
 import com.example.activityservice.repository.GuestBookRepository;
@@ -30,27 +30,27 @@ public class GuestBookServiceImpl implements GuestBookService{
     /**방명록 작성*/
     @Override
     public ResponseGuestBook createGuestBook(RequestGuestBook requestGuestBook) {
-        GuestBookDao guestBookDao = mapper.map(requestGuestBook, GuestBookDao.class);
-        guestBookDao.setWriteTime(LocalDateTime.now());
-        guestBookDao.setRead(false);
+        GuestBookEntity guestBookEntity = mapper.map(requestGuestBook, GuestBookEntity.class);
+        guestBookEntity.setWriteTime(LocalDateTime.now());
+        guestBookEntity.setRead(false);
 
-        guestBookRepository.save(guestBookDao);
+        guestBookRepository.save(guestBookEntity);
 
-        return mapper.map(guestBookDao, ResponseGuestBook.class);
+        return mapper.map(guestBookEntity, ResponseGuestBook.class);
     }
 
     /**방명록 전체 조회*/
     @Override
     public List<ResponseGuestBook> findAllGuestBookById(String userEmail) {
-        Specification<GuestBookDao> spec = Specification.where((root, query, builder) -> {
+        Specification<GuestBookEntity> spec = Specification.where((root, query, builder) -> {
             return builder.equal(root.get("userEmail"), userEmail);
         });
 
-        List<GuestBookDao> guestBookList = guestBookRepository.findAll(spec);
+        List<GuestBookEntity> guestBookList = guestBookRepository.findAll(spec);
 
         List<ResponseGuestBook> result = guestBookList.stream().map(
-                guestBookDao -> {
-                    ResponseGuestBook responseGuestBook = mapper.map(guestBookDao, ResponseGuestBook.class);
+                guestBookEntity -> {
+                    ResponseGuestBook responseGuestBook = mapper.map(guestBookEntity, ResponseGuestBook.class);
                     return responseGuestBook;
                 }
         ).collect(Collectors.toList());
@@ -61,11 +61,11 @@ public class GuestBookServiceImpl implements GuestBookService{
     /**안읽은 방명록 조회*/
     @Override
     public List<ResponseGuestBook> findAllUnReadComment(String userEmail) {
-        List<GuestBookDao> guestBookDaoList = guestBookRepository.findAllByUserEmailAndReadFalse(userEmail);
+        List<GuestBookEntity> guestBookEntityList = guestBookRepository.findAllByUserEmailAndReadFalse(userEmail);
 
-        List<ResponseGuestBook> result = guestBookDaoList.stream().map(
-                guestBookDao -> {
-                    ResponseGuestBook responseGuestBook = mapper.map(guestBookDao, ResponseGuestBook.class);
+        List<ResponseGuestBook> result = guestBookEntityList.stream().map(
+                guestBookEntity -> {
+                    ResponseGuestBook responseGuestBook = mapper.map(guestBookEntity, ResponseGuestBook.class);
                     return responseGuestBook;
                 }
         ).collect(Collectors.toList());
@@ -90,13 +90,13 @@ public class GuestBookServiceImpl implements GuestBookService{
     /**방명록 수정*/
     @Override
     public ResponseGuestBook modifyGuestBookById(RequestGuestBook requestGuestBook, long commentId) {
-        GuestBookDao guestBookDao = mapper.map(requestGuestBook, GuestBookDao.class);
-        guestBookDao.setCommentId(commentId);
-        guestBookDao.setWriteTime(LocalDateTime.now());
+        GuestBookEntity guestBookEntity = mapper.map(requestGuestBook, GuestBookEntity.class);
+        guestBookEntity.setCommentId(commentId);
+        guestBookEntity.setWriteTime(LocalDateTime.now());
 
-        guestBookRepository.save(guestBookDao);
+        guestBookRepository.save(guestBookEntity);
 
-        return mapper.map(guestBookDao, ResponseGuestBook.class);
+        return mapper.map(guestBookEntity, ResponseGuestBook.class);
     }
 
     /**방명록 삭제*/

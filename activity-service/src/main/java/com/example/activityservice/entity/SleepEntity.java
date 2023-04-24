@@ -1,4 +1,4 @@
-package com.example.activityservice.dao;
+package com.example.activityservice.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Data
 @Table(name = "SLEEP_TB")
 @NoArgsConstructor
-public class SleepDao {
+public class SleepEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "SLEEP_ID")

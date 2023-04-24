@@ -1,30 +1,34 @@
-package com.example.activityservice.dao;
+package com.example.activityservice.entity;
 
 import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Table(name = "DIARY_TB")
+@Table(name = "GUEST_BOOK_TB")
 @NoArgsConstructor
-public class DiaryDao {
+@AllArgsConstructor
+public class GuestBookEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "DIARY_ID")
-    private Long diaryId;
+    @Column(name = "COMMENT_ID")
+    private Long commentId;
 
     @Column(name = "USER_ID")
     @NotNull
-    @Email
     private String userEmail;
 
+    @Column(name = "GUEST_ID")
+    private String guestEmail;
     @Column(name = "CONTENT")
     private String content;
     @Column(name = "WRITE_TIME")
     private LocalDateTime writeTime;
+    @Column(name = "READ")
+    private boolean read;
 }
