@@ -11,6 +11,9 @@ import com.example.orderservice.order.vo.complete.ResponsePayment;
 import com.example.orderservice.order.vo.prepare.ResponsePrepareVerification;
 import com.example.orderservice.order.vo.refund.RequestRefund;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -129,15 +132,17 @@ public class OrderController {
 
     //결제내역 조회
     @GetMapping("/payment")
-    public ResponseEntity<List<PaymentEntity>> findPaymentList(@RequestParam("userId") Long userId){
-        List<PaymentEntity> paymentEntityList = paymentRepository.findAllByUserId(userId);
+    public ResponseEntity<List<PaymentEntity>> findPaymentList(@RequestParam("userId") Long userId,
+                                                               @PageableDefault(page = 0, size = 10, sort = "paymentTime", direction = Sort.Direction.DESC) Pageable pageable){
+        List<PaymentEntity> paymentEntityList = paymentRepository.findAllByUserId(userId, pageable);
         return ResponseEntity.status(HttpStatus.OK).body(paymentEntityList);
     }
 
     //환불내역 조회
     @GetMapping("/refund")
-    public ResponseEntity<List<RefundEntity>> findRefundList(@RequestParam("userId") Long userId){
-        List<RefundEntity> refundEntityList = refundRepository.findByPaymentEntity_UserId(userId);
+    public ResponseEntity<List<RefundEntity>> findRefundList(@RequestParam("userId") Long userId,
+                                                             @PageableDefault(page = 0, size = 10, sort = "refundTime", direction = Sort.Direction.DESC) Pageable pageable){
+        List<RefundEntity> refundEntityList = refundRepository.findByPaymentEntity_UserId(userId, pageable);
         return ResponseEntity.status(HttpStatus.OK).body(refundEntityList);
     }
 }
