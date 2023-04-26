@@ -1,6 +1,5 @@
 package com.example.userservice.Login.repository;
 
-import com.example.userservice.Friends.vo.KakaoFriend;
 import com.example.userservice.Login.domain.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

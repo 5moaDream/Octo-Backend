@@ -13,14 +13,18 @@ import java.util.List;
 @Repository
 public interface GuestBookRepository extends JpaRepository<GuestBookEntity, Long>, JpaSpecificationExecutor<GuestBookEntity> {
     // 안읽은 댓글 조회
-    List<GuestBookEntity> findAllByUserEmailAndReadFalse(String userEmail);
+    List<GuestBookEntity> findAllByUserIdAndReadFalse(Long userId);
+    List<GuestBookEntity> findAllByUserId(Long userId);
+
     // 전체 댓글 읽음 처리
     @Modifying
-    @Query("UPDATE GuestBookEntity g SET g.read = true WHERE g.userEmail = :userEmail")
-    int updateAllRead(@Param("userEmail") String userEmail);
+    @Query("UPDATE GuestBookEntity g SET g.isRead = true WHERE g.userId = :userId")
+    int updateAllRead(@Param("userId") Long userId);
 
     //단일 댓글 읽음 처리
     @Modifying
-    @Query("UPDATE GuestBookEntity g SET g.read = true WHERE g.commentId = :commentId")
-    int updateRead(@Param("commentId") long commentId);
+    @Query("UPDATE GuestBookEntity g SET g.isRead = true WHERE g.guestBookId = :guestBookId")
+    int updateRead(@Param("guestBookId") Long guestBookId);
+
+
 }

@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Data
@@ -16,19 +16,18 @@ import java.time.LocalDateTime;
 public class GuestBookEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "COMMENT_ID")
-    private Long commentId;
+    @Column(name = "GUSETBOOK_PK")
+    private Long guestBookId;
 
-    @Column(name = "USER_ID")
+    @Column(name = "USER_FK")
     @NotNull
-    private String userEmail;
-
-    @Column(name = "GUEST_ID")
-    private String guestEmail;
+    private Long userId;
+    @Column(name = "GUEST_FK")
+    private String guestId;
     @Column(name = "CONTENT")
     private String content;
-    @Column(name = "WRITE_TIME")
-    private LocalDateTime writeTime;
-    @Column(name = "READ")
-    private boolean read;
+    @Column(name = "READ_FL")
+    private boolean isRead;
+    @Column(name = "CREATED_TIME")
+    private Date createdTime;
 }

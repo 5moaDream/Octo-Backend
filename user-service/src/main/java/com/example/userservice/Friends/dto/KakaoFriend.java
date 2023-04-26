@@ -1,4 +1,4 @@
-package com.example.userservice.Friends.vo;
+package com.example.userservice.Friends.dto;
 
 import lombok.Data;
 

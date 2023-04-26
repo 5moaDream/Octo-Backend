@@ -1,6 +1,8 @@
 package com.example.activityservice;
 
 import com.example.activityservice.controller.DiaryController;
+import com.example.activityservice.entity.DiaryEntity;
+import com.example.activityservice.repository.DiaryRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,6 +22,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.Date;
+
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
@@ -35,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(RestDocumentationExtension.class)
 class ActivityRestControllerTest {
     @MockBean
-    DiaryServiceImpl diaryService;
+    DiaryRepository diaryRepository;
 
     @Autowired
     ObjectMapper objectMapper;
@@ -49,7 +53,6 @@ class ActivityRestControllerTest {
     @Autowired
     private WebApplicationContext context;
 
-    RequestDiary requestDiary = new RequestDiary("abc@email.com", "다이어리 내용 작성");
 
     @BeforeEach
     void setUp(RestDocumentationContextProvider restDocumentation) {
@@ -70,14 +73,18 @@ class ActivityRestControllerTest {
         @Test
         @DisplayName("다이어리 작성완료")
         void write_success() throws Exception {
+            DiaryEntity diaryEntity = new DiaryEntity();
+            diaryEntity.setUserId(1L);
+            diaryEntity.setContent("다이어리 내용 작성");
+            diaryEntity.setCreatedTime(new Date());
             mockMvc.perform(post("/diary")
-                            .content(objectMapper.writeValueAsBytes(requestDiary))
+                            .content(objectMapper.writeValueAsBytes(diaryEntity))
                             .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isCreated())
                     .andDo(
                         restDocs.document(
                             requestFields(
-                                fieldWithPath("userEmail").description("유저 이메일"),
+                                fieldWithPath("userId").description("유저 아이디"),
                                 fieldWithPath("content").description("내용")
                             ),
                             responseFields(

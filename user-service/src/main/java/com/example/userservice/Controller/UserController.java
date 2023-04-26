@@ -1,8 +1,8 @@
 package com.example.userservice.Controller;
 
 import com.example.userservice.Friends.service.KakaoFriendService;
-import com.example.userservice.Friends.vo.FriendDTO;
-import com.example.userservice.Friends.vo.KakaoFriend;
+import com.example.userservice.Friends.dto.FriendDTO;
+import com.example.userservice.Friends.dto.KakaoFriend;
 import com.example.userservice.Login.domain.UserEntity;
 import com.example.userservice.Login.service.KakaoUserService;
 import com.example.userservice.Login.dto.KakaoUserDTO;
