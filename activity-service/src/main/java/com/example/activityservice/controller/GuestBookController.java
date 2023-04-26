@@ -29,7 +29,7 @@ public class GuestBookController {
     /**방명록 전체 조회*/
     @GetMapping("/{userId}")
     public ResponseEntity<List<GuestBookEntity>> findAllGuestBook(@PathVariable Long userId,
-                                  @PageableDefault(page = 0, size = 10, sort = "guestBookId") Pageable pageable){
+                                  @PageableDefault(page = 0, size = 10, sort = "createdTime") Pageable pageable){
 
         List<GuestBookEntity> responseGuestBooks = service.findAllGuestBookById(userId);
         return ResponseEntity.status(HttpStatus.OK).body(responseGuestBooks);
@@ -50,7 +50,8 @@ public class GuestBookController {
 
     /**안읽은 댓글 불러오기*/
     @GetMapping("/unread/{userId}")
-    public ResponseEntity<List<GuestBookEntity>> findAllUnReadComment(@PathVariable Long userId){
+    public ResponseEntity<List<GuestBookEntity>> findAllUnReadComment(@PathVariable Long userId,
+                                      @PageableDefault(page = 0, size = 10, sort = "createdTime") Pageable pageable){
         List<GuestBookEntity> result = service.findAllUnReadComment(userId);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }

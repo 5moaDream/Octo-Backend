@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Data
@@ -13,15 +13,15 @@ import java.time.LocalDateTime;
 public class SleepEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "SLEEP_ID")
+    @Column(name = "SLEEP_PK")
     private Long sleepId;
 
-    @Column(name = "USER_ID")
-    private String userEmail;
+    @Column(name = "USER_FK")
+    private Long userId;
     @Column(name = "SLEPT_TIME")
-    private LocalDateTime sleptTime;
-    @Column(name = "WAKE_UP_TIME")
-    private LocalDateTime wakeUpTime;
+    private Date sleptTime;
+    @Column(name = "WAKEUP_TIME")
+    private Date wakeUpTime;
     @Column(name = "TOTAL_SLEEP_TIME")
-    private Long totalSleepTime;     //총 분 = 72 -> 60으로 나눠서 표기
+    private Long totalSleepTime;
 }

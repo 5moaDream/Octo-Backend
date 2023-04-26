@@ -3,6 +3,8 @@ package com.example.activityservice.controller;
 import com.example.activityservice.entity.RunningEntity;
 import com.example.activityservice.service.RunningService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +33,8 @@ public class RunningController {
 
     /**모든 러닝 기록 조회*/
     @GetMapping("/all/{userId}")
-    public ResponseEntity<List<RunningEntity>> findAllRunning(@PathVariable Long userId){
+    public ResponseEntity<List<RunningEntity>> findAllRunning(@PathVariable Long userId,
+                                      @PageableDefault(page = 0, size = 10, sort = "runningTime") Pageable pageable){
         List<RunningEntity> responseRunnings = runningService.findAllRunningById(userId);
         return ResponseEntity.status(HttpStatus.OK).body(responseRunnings);
     }
