@@ -17,8 +17,6 @@ public class RefundEntity {
     @OneToOne
     @PrimaryKeyJoinColumn
     private PaymentEntity paymentEntity;
-//    @Column(name = "PAYMENT_FK")
-//    private String payment_fk;
     @Column(name = "REFUND_TIME")
     private Date refundTime;
 

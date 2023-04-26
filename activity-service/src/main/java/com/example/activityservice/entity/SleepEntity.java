@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
@@ -17,7 +18,9 @@ public class SleepEntity {
     private Long sleepId;
 
     @Column(name = "USER_FK")
+    @NotNull
     private Long userId;
+
     @Column(name = "SLEPT_TIME")
     private Date sleptTime;
     @Column(name = "WAKEUP_TIME")

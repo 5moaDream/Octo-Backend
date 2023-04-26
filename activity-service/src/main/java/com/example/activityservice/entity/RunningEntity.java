@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Data
@@ -18,12 +18,13 @@ public class RunningEntity {
     private Long runningId;
 
     @Column(name = "USER_FK")
+    @NotNull
     private Long userId;
 
     @Column(name = "RUNNING_TIME")
-    private LocalDateTime runningTime;
+    private Date runningTime;
     @Column(name = "TOTAL_RUNNING_TIME")
-    private long totalRunningTime;
+    private int totalRunningTime;
     @Column(name = "DISTANCE")
     private float distance;
 }

@@ -4,6 +4,7 @@ import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -23,9 +24,13 @@ public class GuestBookEntity {
     @NotNull
     private Long userId;
     @Column(name = "GUEST_FK")
+    @NotNull
     private String guestId;
+
     @Column(name = "CONTENT")
+    @Length(max = 100)
     private String content;
+
     @Column(name = "READ_FL")
     private boolean isRead;
     @Column(name = "CREATED_TIME")
