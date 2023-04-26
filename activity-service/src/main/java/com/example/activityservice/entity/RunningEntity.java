@@ -14,17 +14,14 @@ import java.time.LocalDateTime;
 public class RunningEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "SLEEP_ID")
+    @Column(name = "RUNNING_PK")
     private Long runningId;
 
-    @Column(name = "USER_ID")
-    @NotNull
-    private String userEmail;
+    @Column(name = "USER_FK")
+    private Long userId;
 
-    @Column(name = "RUNNING_START_TIME")
-    private LocalDateTime runningStartTime;
-    @Column(name = "RUNNING_END_TIME")
-    private LocalDateTime runningEndTime;
+    @Column(name = "RUNNING_TIME")
+    private LocalDateTime runningTime;
     @Column(name = "TOTAL_RUNNING_TIME")
     private long totalRunningTime;
     @Column(name = "DISTANCE")
