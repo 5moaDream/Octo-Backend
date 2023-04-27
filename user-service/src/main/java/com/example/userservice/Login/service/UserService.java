@@ -39,7 +39,7 @@ public class UserService {
     }
 
 
-    public void updateUser(String characterName, long userId){
+    public void updateUser(long userId, String characterName){
         userRepository.updateCharacterName(characterName, userId);
     }
 }

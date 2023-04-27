@@ -1,5 +1,8 @@
-package com.example.userservice.token;
+package com.example.userservice.token.service;
 
+import com.example.userservice.token.domain.RefreshTokenEntity;
+import com.example.userservice.token.dto.KakaoTokenDTO;
+import com.example.userservice.token.repository.RefreshTokenRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;

@@ -1,4 +1,4 @@
-package com.example.userservice.token;
+package com.example.userservice.token.dto;
 
 import lombok.Data;
 
