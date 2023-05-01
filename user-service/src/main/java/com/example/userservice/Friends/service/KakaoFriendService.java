@@ -19,7 +19,7 @@ public class KakaoFriendService {
     private static final String FRIENDS_INFO_URI = "https://kapi.kakao.com/v1/api/talk/friends";
 
     /**카카오 친구 목록 조회*/
-    public KakaoFriend getKakaoFriends(String accessToken, Integer offset) {
+    public KakaoFriend getKakaoFriends(String accessToken, int offset) {
         DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory();
         factory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.VALUES_ONLY);
 
@@ -27,6 +27,9 @@ public class KakaoFriendService {
 
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
+                        .scheme("https")
+                        .host("kapi.kakao.com")
+                        .path("/v1/api/talk/friends")
                         .queryParam("limit", 20)
                         .queryParam("offset", offset)
                         .build())

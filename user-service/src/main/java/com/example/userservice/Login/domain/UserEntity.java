@@ -1,18 +1,16 @@
 package com.example.userservice.Login.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 
 @Builder
-@Entity(name="USER_TB")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity(name="USER_TB")
 public class UserEntity {
     @Id
     @Column(name = "USER_PK")

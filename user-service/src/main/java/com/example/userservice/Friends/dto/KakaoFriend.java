@@ -1,13 +1,16 @@
 package com.example.userservice.Friends.dto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Setter
+@Getter
 public class KakaoFriend {
     private Integer total_count;
     private Friend[] friends;
 
-    @Data
+    @Setter
+    @Getter
     public class Friend{
         private Long id;
         private String uuid;

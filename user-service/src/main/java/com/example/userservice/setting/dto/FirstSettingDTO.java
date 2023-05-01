@@ -1,22 +1,20 @@
 package com.example.userservice.setting.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import javax.validation.constraints.Size;
+import javax.validation.constraints.Max;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class FirstSettingDTO {
     private Long userId;
-    @Size(max = 15)
+    @Max(15)
     private String characterName;
-    @Size(max = 45)
+    @Max(45)
     private String stateMSG;
-    @Size(min = 6, max = 8)
     private float sleepTime;
-    @Size(min = 1)
     private float distance;
 }
+

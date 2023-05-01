@@ -5,6 +5,8 @@ import com.example.userservice.setting.repository.SettingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class SettingService {
@@ -14,7 +16,7 @@ public class SettingService {
         settingRepository.save(setting);
     }
 
-    public SettingEntity getSettingInfo(Long userId){
-        return settingRepository.findByUserId(userId);
+    public Optional<SettingEntity> getSettingInfo(Long userId){
+        return settingRepository.findById(userId);
     }
 }

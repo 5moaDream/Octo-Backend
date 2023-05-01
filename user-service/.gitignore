@@ -2,10 +2,10 @@ HELP.md
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
-!**/src/main/**/build/
-!**/src/test/**/build/
+!src/docs/main/**/build/
+!src/docs/test/**/build/
 생각정리.txt
-
+src/main/resources/static/docs/
 
 ### STS ###
 .apt_generated
@@ -16,8 +16,8 @@ build/
 .springBeans
 .sts4-cache
 bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
+!src/docs/main/**/bin/
+!src/docs/test/**/bin/
 
 ### IntelliJ IDEA ###
 .idea
@@ -25,8 +25,8 @@ bin/
 *.iml
 *.ipr
 out/
-!**/src/main/**/out/
-!**/src/test/**/out/
+!src/docs/main/**/out/
+!src/docs/test/**/out/
 
 ### NetBeans ###
 /nbproject/private/

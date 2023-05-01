@@ -1,12 +1,11 @@
 package com.example.userservice.Friends.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
-@Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@Setter
+@Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class FriendDTO {
     private Long id;
     private String nickName;

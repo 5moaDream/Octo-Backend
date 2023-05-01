@@ -23,8 +23,7 @@ class SpringCloudGatewayApplicationTests {
         Duration oneMonth = Duration.ofDays(30);
         Date validity = Date.from(Instant.now().plus(oneMonth));
 
-        RefreshTokenEntity refreshToken = repository.findRefreshTokenEntityByUserIdAndValidityAfter(
-                                                                            2713582482L, validity);
+        RefreshTokenEntity refreshToken = repository.findRefreshTokenEntityByUserIdAndValidityAfter(2713582482L, new Date());
         //new Date() = 현재 시간, validity = 한달 후
         System.out.println(refreshToken);
     }

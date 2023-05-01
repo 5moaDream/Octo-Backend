@@ -55,14 +55,14 @@ class TokenServiceTest {
         System.out.println("refresh Token: " + refreshToken);
         //토큰 디코딩
         Jws<Claims> jws = Jwts.parserBuilder()
-                .setSigningKey(secret)
+                .setSigningKey(key)
                 .build()
                 .parseClaimsJws(token);
 
         Jws<Claims> jws2 = Jwts.parserBuilder()
-                .setSigningKey(secret)
+                .setSigningKey(key)
                 .build()
-                .parseClaimsJws(refreshToken);
+                .parseClaimsJws("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyNzEzNTgyNDgyIiwiZXhwIjoxNjg1Mzc5MTU4fQ.b7BaDqwgnl_sq13y3ultBS6N8JITZuEELkMwpSLOFYpEylP0Qe-G-a44xkPFkjJN3p3CjvoiiGB9Kr_SkJ2ICQ");
 
         String userId = jws.getBody().getSubject();
         Date expire = jws.getBody().getExpiration();

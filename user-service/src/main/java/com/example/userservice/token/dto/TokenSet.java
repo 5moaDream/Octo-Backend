@@ -1,11 +1,13 @@
 package com.example.userservice.token.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @AllArgsConstructor
-@Data
-public class RequestKakaoToken {
+@Getter
+@Setter
+public class TokenSet {
     private String access_token;
     private String refresh_token;
 }

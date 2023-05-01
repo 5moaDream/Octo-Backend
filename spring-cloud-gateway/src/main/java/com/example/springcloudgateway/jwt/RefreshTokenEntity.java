@@ -1,7 +1,6 @@
 package com.example.springcloudgateway.jwt;
 
 import lombok.Data;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

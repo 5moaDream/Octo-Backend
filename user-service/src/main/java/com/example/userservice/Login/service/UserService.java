@@ -4,21 +4,17 @@ import com.example.userservice.Login.domain.UserEntity;
 import com.example.userservice.Login.dto.KakaoUserDTO;
 import com.example.userservice.Login.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
 
-    @Transactional
     public UserEntity createUser(KakaoUserDTO kakaoUserDTO) {
-        String default_character_url = "/Users/jeongchan-yeong/Documents/GitHub/Octo-Backend/sql/test_image/문어1.png";
+        String default_character_url = "https://octo-image-bucket.s3.ap-northeast-2.amazonaws.com/%EA%B8%B0%EB%B3%B8%20%EB%AC%B8%EC%96%B4.png";
 
         UserEntity user = UserEntity.builder()
                             .userId(kakaoUserDTO.getId())
@@ -32,14 +28,11 @@ public class UserService {
     }
 
     public Optional<UserEntity> findByUserId(long userId){
-        log.info("DB에서 유저 조회 요청");
-
         Optional<UserEntity> user = userRepository.findByUserId(userId);
         return user;
     }
 
-
-    public void updateUser(long userId, String characterName){
+    public void updateUser(String characterName, Long userId){
         userRepository.updateCharacterName(characterName, userId);
     }
 }
