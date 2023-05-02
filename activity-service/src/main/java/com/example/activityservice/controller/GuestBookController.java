@@ -16,57 +16,55 @@ import java.util.List;
 @RequestMapping("/guest-book")
 public class GuestBookController {
 
-    final GuestBookService service;
+    final GuestBookService guestBookService;
 
 
     /**방명록 작성*/
     @PostMapping("")
-    public ResponseEntity<GuestBookEntity> createGuestBook(@RequestBody GuestBookEntity guestBook){
-        GuestBookEntity responseGuestBook = service.createGuestBook(guestBook);
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseGuestBook);
+    public HttpStatus createGuestBook(@RequestBody GuestBookEntity guestBook){
+        return guestBookService.createGuestBook(guestBook);
     }
 
     /**방명록 전체 조회*/
     @GetMapping("/{userId}")
     public ResponseEntity<List<GuestBookEntity>> findAllGuestBook(@PathVariable Long userId,
-                                  @PageableDefault(page = 0, size = 10, sort = "createdTime") Pageable pageable){
+                                                                  @PageableDefault(page = 0, size = 30, sort = "createdTime") Pageable pageable){
 
-        List<GuestBookEntity> responseGuestBooks = service.findAllGuestBookById(userId);
+        List<GuestBookEntity> responseGuestBooks = guestBookService.findAllGuestBookById(userId, pageable);
+        guestBookService.readAllComment(userId);
         return ResponseEntity.status(HttpStatus.OK).body(responseGuestBooks);
     }
 
-    /**방명록 업데이트*/
-    @PutMapping("/{guestBookId}")
-    public ResponseEntity<GuestBookEntity> modifyGuestBook(@RequestBody GuestBookEntity guestBook ){
-        GuestBookEntity responseGuestBook = service.modifyGuestBookById(guestBook);
-        return ResponseEntity.status(HttpStatus.OK).body(responseGuestBook);
-    }
-    /**방명록 삭제*/
-    @DeleteMapping("/{guestBookId}")
-    public ResponseEntity<Boolean> deleteGuestBook(@PathVariable Long guestBookId){
-        Boolean result = service.deleteGuestBookById(guestBookId);
-        return ResponseEntity.status(HttpStatus.OK).body(result);
-    }
-
-    /**안읽은 댓글 불러오기*/
+    /**안읽은 방명록 조회*/
     @GetMapping("/unread/{userId}")
     public ResponseEntity<List<GuestBookEntity>> findAllUnReadComment(@PathVariable Long userId,
-                                      @PageableDefault(page = 0, size = 10, sort = "createdTime") Pageable pageable){
-        List<GuestBookEntity> result = service.findAllUnReadComment(userId);
+                                                                      @PageableDefault(page = 0, size = 30, sort = "createdTime") Pageable pageable){
+        List<GuestBookEntity> result = guestBookService.findAllUnReadComment(userId, pageable);
+        guestBookService.readAllComment(userId);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    /**전체 댓글 읽음 처리*/
-    @PutMapping("/read-all/{userId}")
-    public HttpStatus readAllComment(@PathVariable Long userId){
-        service.readAllComment(userId);
-        return HttpStatus.OK;
-    }
+//    @ExceptionHandler(NullPointerException.class) 컨트롤러에서 발생하는 모든 예외를 처리 = 각 메소드에 try 없어도 됨
 
-    /**댓글 읽음 처리*/
-    @PutMapping("/read/{guestBookId}")
-    public HttpStatus readComment(@PathVariable Long guestBookId){
-        service.readComment(guestBookId);
-        return HttpStatus.OK;
-    }
+
+//    /**방명록 업데이트*/
+//    @PutMapping("/{guestBookId}")
+//    public ResponseEntity<GuestBookEntity> modifyGuestBook(@RequestBody GuestBookEntity guestBook ){
+//        GuestBookEntity responseGuestBook = guestBookService.modifyGuestBookById(guestBook);
+//        return ResponseEntity.status(HttpStatus.OK).body(responseGuestBook);
+//    }
+//    /**방명록 삭제*/
+//    @DeleteMapping("/{guestBookId}")
+//    public ResponseEntity<Boolean> deleteGuestBook(@PathVariable Long guestBookId){
+//        Boolean result = guestBookService.deleteGuestBookById(guestBookId);
+//        return ResponseEntity.status(HttpStatus.OK).body(result);
+//    }
+
+
+//    /**댓글 읽음 처리*/
+//    @PutMapping("/read/{guestBookId}")
+//    public HttpStatus readComment(@PathVariable Long guestBookId){
+//        guestBookService.readComment(guestBookId);
+//        return HttpStatus.OK;
+//    }
 }

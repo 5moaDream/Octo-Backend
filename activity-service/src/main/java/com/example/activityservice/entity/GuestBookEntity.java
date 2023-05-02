@@ -1,23 +1,24 @@
 package com.example.activityservice.entity;
 
 import javax.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Length;
+
+import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
+@Table(name = "GUESTBOOK_TB")
 @Entity
-@Data
-@Table(name = "GUEST_BOOK_TB")
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class GuestBookEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "GUSETBOOK_PK")
+    @Column(name = "GUESTBOOK_PK")
     private Long guestBookId;
 
     @Column(name = "USER_FK")
@@ -25,14 +26,14 @@ public class GuestBookEntity {
     private Long userId;
     @Column(name = "GUEST_FK")
     @NotNull
-    private String guestId;
+    private Long guestId;
 
     @Column(name = "CONTENT")
-    @Length(max = 100)
+    @Size(max = 100)
     private String content;
 
     @Column(name = "READ_FL")
-    private boolean isRead;
+    private boolean read;
     @Column(name = "CREATED_TIME")
     private Date createdTime;
 }
