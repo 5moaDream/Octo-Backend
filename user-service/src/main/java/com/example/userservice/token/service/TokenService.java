@@ -28,7 +28,7 @@ public class TokenService {
     private static final String TOKEN_URI = "https://kauth.kakao.com/oauth/token";
     private static final String CLIENT_ID = "09201921cd5e210ee03ddd019e256454";
 
-    private static final String REDIRECT_URI = "http://127.0.0.1:8000/unauthorization/code";
+    private static final String REDIRECT_URI = "http://3.39.126.140:8000/unauthorization/code";
     private static final String GRANT_TYPE = "authorization_code";
 
 
