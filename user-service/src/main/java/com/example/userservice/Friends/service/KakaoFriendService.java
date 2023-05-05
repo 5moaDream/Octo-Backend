@@ -56,7 +56,7 @@ public class KakaoFriendService {
         for(UserEntity u : userList){
             for(KakaoFriend.Friend k : friends.getFriends()){
                 if(k.getId() == u.getUserId()){
-                    FriendDTO friend = new FriendDTO(u.getUserId(), k.getProfile_nickname(), u.getCharacter_url());
+                    FriendDTO friend = new FriendDTO(u.getUserId(), k.getProfile_nickname(), u.getCharacterUrl());
                     responseFriendList.add(friend);
                     break;
                 }

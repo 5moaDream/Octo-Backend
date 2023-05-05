@@ -15,7 +15,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     Optional<UserEntity> findByUserId(long userId);
 
     @Modifying
-    @Query("UPDATE USER_TB u SET u.characterName = ?1 WHERE u.userId = ?2")
+    @Query("UPDATE UserEntity u SET u.characterName = ?1 WHERE u.userId = ?2")
     void updateCharacterName(String name, Long id);
 
     List<UserEntity> findAllByUserIdIn(List<Long> friendIds);

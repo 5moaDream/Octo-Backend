@@ -1,6 +1,5 @@
 package com.example.springcloudgateway.filter;
 
-import com.example.springcloudgateway.jwt.RefreshTokenRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -24,13 +23,11 @@ import java.security.Key;
 @Slf4j
 public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<AuthorizationHeaderFilter.Config> {
     Environment env;
-    RefreshTokenRepository repository;
     private Key key;
 
-    public AuthorizationHeaderFilter(Environment env, RefreshTokenRepository repository){
+    public AuthorizationHeaderFilter(Environment env){
         super(Config.class);    //super = 상속해준 부모
         this.env = env;
-        this.repository = repository;
         byte[] keyBytes = Decoders.BASE64.decode(env.getProperty("token.secret"));
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }

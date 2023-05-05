@@ -4,6 +4,7 @@ import com.example.activityservice.entity.RunningEntity;
 import com.example.activityservice.repository.RunningRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -16,12 +17,20 @@ public class RunningService {
         this.runningRepository = runningRepository;
     }
 
-    public RunningEntity createRunning(RunningEntity running) {
-        return runningRepository.save(running);
+    public void createRunning(RunningEntity running) {
+        runningRepository.save(running);
     }
 
     public List<RunningEntity> findTodayRunningById(Long userId) {
         return runningRepository.findTodayRunningById(userId);
+    }
+
+    public List<RunningEntity> findWeekRunningById(Long userId) {
+        Date currentDate = new Date();
+        Date tomorrowDate = new Date(currentDate.getTime() + (1000 * 60 * 60 * 24));
+        Date sevenDaysAgoDate = new Date(currentDate.getTime() - (1000 * 60 * 60 * 24 * 7));
+
+        return runningRepository.findAllByRunningTimeBetweenAndUserId(sevenDaysAgoDate, tomorrowDate, userId);
     }
 
     public List<RunningEntity> findAllRunningById(Long userId) {

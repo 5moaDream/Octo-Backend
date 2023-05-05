@@ -14,8 +14,9 @@ public class RefundEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "REFUND_PK")
+    private Long refundId;
     @OneToOne
-    @PrimaryKeyJoinColumn
+    @JoinColumn(name = "merchant_uid")
     private PaymentEntity paymentEntity;
     @Column(name = "REFUND_TIME")
     private Date refundTime;

@@ -18,9 +18,9 @@ public class UserService {
 
         UserEntity user = UserEntity.builder()
                             .userId(kakaoUserDTO.getId())
-                            .thumbnail_image_url(kakaoUserDTO.getKakao_account().getProfile().getThumbnail_image_url())
+                            .thumbnailImageUrl(kakaoUserDTO.getKakao_account().getProfile().getThumbnail_image_url())
                             .experienceValue(0)
-                            .character_url(default_character_url)
+                            .characterUrl(default_character_url)
                             .build();
 
         UserEntity result = userRepository.save(user);

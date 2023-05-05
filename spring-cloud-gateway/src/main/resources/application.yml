@@ -14,16 +14,6 @@ eureka:
 spring:
   application:
     name: api-gateway-service
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/OctoDream?serverTimezone=Asia/Seoul
-    username: root
-    password: Cksdud!0342
-  jpa:
-    properties:
-      hibernate:
-        format_sql: true
-    show-sql: true
   cloud:
     gateway:
       default-filters:
@@ -63,10 +53,3 @@ spring:
 logging:
   level:
     com.example.springcloud: DEBUG
-
-#mili sec = sec * 1000
-#43200000 = 12시간
-#secret = 아무거나 상관없음 = 비밀 키 값
-token:
-  expiration_time: 3600000
-  secret: YzJSbWJtZHNhMnB1YzJSbVp5ZHFNMmx4Y21wbk5ETnZjR3BuYlRRek1EbHBkR2N0YXpRelp6TTFOR2RvZERRPT3jhYHjhLTjhYfjhY7jhYHjhLTjhYfjhLntmLjrgpjjhaPshJzjhZc07J=

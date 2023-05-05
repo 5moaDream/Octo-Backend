@@ -1,21 +1,19 @@
 server:
-  port: 8000
+  port: 0
 
 spring:
   application:
     name: order-service
-  h2:
-    console:
-      enabled: true
-      settings:
-        web-allow-others: true
-      path: /h2-console
-  jpa:
-    hibernate:
-      ddl-auto: update
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:testdb
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/OctoDream?serverTimezone=Asia/Seoul
+    username: root
+    password: Cksdud!0342
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
 
 eureka:
   instance:

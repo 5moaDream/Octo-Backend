@@ -19,23 +19,29 @@ public class RunningController {
 
     /**러닝 기록*/
     @PostMapping("")
-    public ResponseEntity<RunningEntity> createRunning(@RequestBody RunningEntity running){
-        RunningEntity runningEntity = runningService.createRunning(running);
-        return ResponseEntity.status(HttpStatus.CREATED).body(runningEntity);
-
+    public HttpStatus createRunning(@RequestBody RunningEntity running){
+        runningService.createRunning(running);
+        return HttpStatus.CREATED;
     }
 
     /**당일 러닝 기록 조회*/
     @GetMapping("/today/{userId}")
-    public ResponseEntity<List<RunningEntity>> findTodayTotalRunning(@PathVariable Long userId){
+    public ResponseEntity<List<RunningEntity>> findTodayRunning(@PathVariable Long userId){
         List<RunningEntity> responseRunnings = runningService.findTodayRunningById(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(responseRunnings);
+    }
+
+    /**최근 7일간 러닝 기록 조회*/
+    @GetMapping("/week/{userId}")
+    public ResponseEntity<List<RunningEntity>> findWeekRunning(@PathVariable Long userId){
+        List<RunningEntity> responseRunnings = runningService.findWeekRunningById(userId);
         return ResponseEntity.status(HttpStatus.OK).body(responseRunnings);
     }
 
     /**모든 러닝 기록 조회*/
     @GetMapping("/all/{userId}")
     public ResponseEntity<List<RunningEntity>> findAllRunning(@PathVariable Long userId,
-                                      @PageableDefault(page = 0, size = 10, sort = "runningTime") Pageable pageable){
+                                                              @PageableDefault(page = 0, size = 30, sort = "runningTime") Pageable pageable){
         List<RunningEntity> responseRunnings = runningService.findAllRunningById(userId);
         return ResponseEntity.status(HttpStatus.OK).body(responseRunnings);
     }
