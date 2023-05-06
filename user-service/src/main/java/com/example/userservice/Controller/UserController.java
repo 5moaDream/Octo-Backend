@@ -73,11 +73,11 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
         //4) 카카오 유저 아이디로 DB에서 유저 정보 조회
-        UserEntity userEntity = userService.findByUserId(kakaoUserDTO.getId()).get();
+        Optional<UserEntity> userEntity = userService.findByUserId(kakaoUserDTO.getId());
 
         //4-1) 유저 정보가 없다면 기본 틀로 저장 => 클라이언트에서 이름 같은 정보들이 null이면 기본 설정하도록
-        if(userEntity == null){
-            userEntity = userService.createUser(kakaoUserDTO);
+        if(!userEntity.isPresent()){
+            userService.createUser(kakaoUserDTO);
         }
 
         //5) 카카오 유저아이디로 토큰(access, refresh) 생성
