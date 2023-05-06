@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface RefundRepository extends JpaRepository<RefundEntity, Long> {
-    List<RefundEntity> findByPaymentEntity_UserId(Long userId, Pageable pageable);
+    List<RefundEntity> findByPaymentEntityUserId(Long userId, Pageable pageable);
 }

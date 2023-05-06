@@ -10,6 +10,7 @@ import com.example.orderservice.order.vo.complete.ResponseCompleteVerification;
 import com.example.orderservice.order.vo.complete.ResponsePayment;
 import com.example.orderservice.order.vo.prepare.ResponsePrepareVerification;
 import com.example.orderservice.order.vo.refund.RequestRefund;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -23,18 +24,15 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/order-service")
+@RequiredArgsConstructor
 public class OrderController {
-    private PaymentRepository paymentRepository;
-    private PaymentService paymentService;
-    private RefundRepository refundRepository;
-    public OrderController(PaymentRepository paymentRepository, PaymentService paymentService, RefundRepository refundRepository) {
-        this.paymentRepository = paymentRepository;
-        this.paymentService = paymentService;
-        this.refundRepository = refundRepository;
-    }
+    final PaymentRepository paymentRepository;
+    final PaymentService paymentService;
+    final RefundRepository refundRepository;
 
 
-    @GetMapping("health_check")
+    @GetMapping("/health_check")
     public String healthCheck() {
         return "health Check Success!";
     }
@@ -142,7 +140,7 @@ public class OrderController {
     @GetMapping("/refund")
     public ResponseEntity<List<RefundEntity>> findRefundList(@RequestParam("userId") Long userId,
                                                              @PageableDefault(page = 0, size = 10, sort = "refundTime", direction = Sort.Direction.DESC) Pageable pageable){
-        List<RefundEntity> refundEntityList = refundRepository.findByPaymentEntity_UserId(userId, pageable);
+        List<RefundEntity> refundEntityList = refundRepository.findByPaymentEntityUserId(userId, pageable);
         return ResponseEntity.status(HttpStatus.OK).body(refundEntityList);
     }
 }

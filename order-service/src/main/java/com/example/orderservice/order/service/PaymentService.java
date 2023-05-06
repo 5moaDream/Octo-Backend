@@ -1,6 +1,4 @@
 package com.example.orderservice.order.service;
-import com.example.orderservice.order.entity.PaymentEntity;
-import com.example.orderservice.order.repository.PaymentRepository;
 import com.example.orderservice.order.vo.complete.ResponseCompleteVerification;
 import com.example.orderservice.order.vo.prepare.ResponsePrepareVerification;
 import com.example.orderservice.order.vo.refund.RequestRefund;

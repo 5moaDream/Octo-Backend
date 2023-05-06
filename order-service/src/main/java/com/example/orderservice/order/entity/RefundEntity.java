@@ -6,8 +6,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity
-@Table(name = "REFUND_TB")
+@Entity(name = "REFUND_TB")
 @Data
 @NoArgsConstructor
 public class RefundEntity {
