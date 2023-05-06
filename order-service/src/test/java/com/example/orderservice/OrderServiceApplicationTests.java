@@ -8,8 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
 
-import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 
 @SpringBootTest
 @AutoConfigureMockMvc
