@@ -15,8 +15,10 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
+import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
 import java.security.Key;
 
 @Component
@@ -57,8 +59,15 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
             }
 
             else {
-                request.getQueryParams().add("id", userId);
-                return chain.filter(exchange);
+                URI uri = exchange.getRequest().getURI();
+                URI newUri = UriComponentsBuilder.fromUri(uri)
+                        .queryParam("id", userId)
+                        .build(true)
+                        .toUri();
+                ServerHttpRequest newRequest = request.mutate()
+                        .uri(newUri)
+                        .build();
+                return chain.filter(exchange.mutate().request(newRequest).build());
             }
         });
     }
