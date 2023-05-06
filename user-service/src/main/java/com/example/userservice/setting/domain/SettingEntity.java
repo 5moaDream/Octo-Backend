@@ -18,7 +18,7 @@ public class SettingEntity {
     private Long userId;
 
     @Column(name = "SLEEP_TIME")
-    private float sleepTime;
+    private int sleepTime;
 
     @Column(name = "DISTANCE")
     private float distance;

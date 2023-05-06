@@ -14,7 +14,7 @@ public class FirstSettingDTO {
     private String characterName;
     @Max(45)
     private String stateMSG;
-    private float sleepTime;
+    private int sleepTime;
     private float distance;
 }
 
