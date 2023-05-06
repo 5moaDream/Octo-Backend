@@ -49,9 +49,14 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
             String authorizationHeader = request.getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
             String jwt = authorizationHeader.replace("Bearer ", "");
 
+            String userId = isJwtValid(jwt);
             //토큰 유효성 검사
-            if(isJwtValid(jwt) == null){
+            if(userId == null){
                 return onError(exchange, "JWT token is not valid", HttpStatus.UNAUTHORIZED);
+            }
+            else {
+                HttpHeaders headers = request.getHeaders();
+                headers.add("id", userId);
             }
 
             return chain.filter(exchange);
@@ -59,19 +64,18 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
     }
 
     private String isJwtValid(String jwt) {
-        String new_accessToken = jwt;
         try {
             Jws<Claims> jws = Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(jwt);
 
+            String userId = jws.getBody().getSubject();
+            return userId;
         } catch (Exception ex) {
             //토큰 만료도 여기서 걸림
             return null;
         }
-
-        return new_accessToken;
     }
 
     private Mono<Void> onError(ServerWebExchange exchange, String err, HttpStatus httpStatus) {

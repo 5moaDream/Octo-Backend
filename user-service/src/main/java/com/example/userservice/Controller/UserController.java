@@ -92,9 +92,13 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(tokenSet);
     }
 
-    /**유저정보 조회*/
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<Optional<UserEntity>> getUser(@PathVariable("userId") long userId){
+    /**메인화면 요청*/
+
+
+
+    /**유저정보 조회*/    //아이디 없이 토큰만 보내서 유저정보 조회하도록
+    @GetMapping("/user")
+    public ResponseEntity<Optional<UserEntity>> getUser(@RequestParam("id") Long userId){
         Optional<UserEntity> user = userService.findByUserId(userId);
         //유저 정보가 없다면 클라이언트에서 첫 로그인 유저 정보 세팅으로 요청
 
@@ -103,7 +107,7 @@ public class UserController {
 
     /**첫 로그인 시 유저정보 세팅*/
     @PutMapping("/first")
-    public HttpStatus firstSetting(@RequestBody FirstSettingDTO firstSettingDTO){
+    public HttpStatus firstSetting(@RequestParam("id") Long userId, @RequestBody FirstSettingDTO firstSettingDTO){
         SettingEntity settingEntity;
         Date afterMonth;
 
@@ -114,7 +118,7 @@ public class UserController {
         afterMonth = cal.getTime();
 
         settingEntity = SettingEntity.builder()
-                        .userId(firstSettingDTO.getUserId())
+                        .userId(userId)
                         .sleepTime(firstSettingDTO.getSleepTime())
                         .distance(firstSettingDTO.getDistance())
                         .dday(afterMonth)
@@ -128,20 +132,22 @@ public class UserController {
 
     /**유저 세팅정보 업데이트*/
     @PutMapping("/setting")
-    public HttpStatus updateSetting(@RequestBody SettingEntity setting){
+    public HttpStatus updateSetting(@RequestParam("id") Long userId, @RequestBody SettingEntity setting){
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
         cal.add(Calendar.MONTH, 1);
         Date afterMonth = cal.getTime();
+
         setting.setDday(afterMonth);
+        setting.setUserId(userId);
 
         settingService.updateSettingInfo(setting);
         return HttpStatus.OK;
     }
 
     /**세팅 정보 조회*/
-    @GetMapping("/setting/{userId}")
-    public ResponseEntity<SettingEntity> getSetting(@PathVariable("userId") Long userId){
+    @GetMapping("/setting")
+    public ResponseEntity<SettingEntity> getSetting(@RequestParam("id") Long userId){
         Optional<SettingEntity> setting = settingService.getSettingInfo(userId);
         return ResponseEntity.status(HttpStatus.OK).body(setting.get());
     }
