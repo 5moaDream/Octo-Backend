@@ -47,9 +47,10 @@ public class OrderController {
     //결제 요청 + 사후 검증
     @CrossOrigin
     @PostMapping("/completion")
-    public ResponseEntity<ResponsePayment> completePayment(@RequestBody RequestPayment requestPayment) {
-        System.out.println("사후 검증");
+    public ResponseEntity<ResponsePayment> completePayment(@RequestParam("id") Long userId, @RequestBody RequestPayment requestPayment) {
+
         try {
+            requestPayment.setUserId(userId);
             String imp_uid = requestPayment.getImp_uid();           //포트원 거래번호
             String token = requestPayment.getToken();               //엑세스 토큰
 

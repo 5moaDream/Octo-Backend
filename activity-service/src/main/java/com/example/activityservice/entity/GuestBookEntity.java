@@ -24,6 +24,7 @@ public class GuestBookEntity {
     @Column(name = "USER_FK")
     @NotNull
     private Long userId;
+
     @Column(name = "GUEST_FK")
     @NotNull
     private Long guestId;
@@ -34,6 +35,8 @@ public class GuestBookEntity {
 
     @Column(name = "READ_FL")
     private boolean read;
+
+    @Temporal(value = TemporalType.TIMESTAMP)
     @Column(name = "CREATED_TIME")
     private Date createdTime;
 }

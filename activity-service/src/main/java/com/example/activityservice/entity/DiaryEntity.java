@@ -1,6 +1,7 @@
 package com.example.activityservice.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
@@ -9,8 +10,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
+@Builder
 @Entity
-@Data   //setter 쓸데없이 쓰지말 것
+@Data
 @Table(name = "DIARY_TB")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,6 +30,7 @@ public class DiaryEntity {
     @Length(max = 100)
     private String content;
 
+    @Temporal(value = TemporalType.TIMESTAMP)
     @Column(name = "CREATED_TIME")
     private Date createdTime;
 }

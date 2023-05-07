@@ -13,21 +13,22 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/guest-book")
+@RequestMapping("/activity-service")
 public class GuestBookController {
 
     final GuestBookService guestBookService;
 
 
     /**방명록 작성*/
-    @PostMapping("")
-    public HttpStatus createGuestBook(@RequestBody GuestBookEntity guestBook){
+    @PostMapping("/guest-book")
+    public HttpStatus createGuestBook(@RequestParam("id") Long userId, @RequestBody GuestBookEntity guestBook){
+        guestBook.setUserId(userId);
         return guestBookService.createGuestBook(guestBook);
     }
 
     /**방명록 전체 조회*/
-    @GetMapping("/{userId}")
-    public ResponseEntity<List<GuestBookEntity>> findAllGuestBook(@PathVariable Long userId,
+    @GetMapping("/guest-book")
+    public ResponseEntity<List<GuestBookEntity>> findAllGuestBook(@RequestParam("id") Long userId,
                                                                   @PageableDefault(page = 0, size = 30, sort = "createdTime") Pageable pageable){
 
         List<GuestBookEntity> responseGuestBooks = guestBookService.findAllGuestBookById(userId, pageable);
@@ -36,8 +37,8 @@ public class GuestBookController {
     }
 
     /**안읽은 방명록 조회*/
-    @GetMapping("/unread/{userId}")
-    public ResponseEntity<List<GuestBookEntity>> findAllUnReadComment(@PathVariable Long userId,
+    @GetMapping("/guest-book/unread")
+    public ResponseEntity<List<GuestBookEntity>> findAllUnReadComment(@RequestParam("id") Long userId,
                                                                       @PageableDefault(page = 0, size = 30, sort = "createdTime") Pageable pageable){
         List<GuestBookEntity> result = guestBookService.findAllUnReadComment(userId, pageable);
         guestBookService.readAllComment(userId);

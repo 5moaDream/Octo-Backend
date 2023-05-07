@@ -15,7 +15,7 @@ public class RefundEntity {
     @Column(name = "REFUND_PK")
     private Long refundId;
     @OneToOne
-    @JoinColumn(name = "merchant_uid")
+    @JoinColumn(name = "MERCHANT_UID")
     private PaymentEntity paymentEntity;
     @Column(name = "REFUND_TIME")
     private Date refundTime;

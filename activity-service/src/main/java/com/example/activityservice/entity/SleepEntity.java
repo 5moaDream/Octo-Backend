@@ -23,8 +23,10 @@ public class SleepEntity {
 
     @Column(name = "SLEPT_TIME")
     private Date sleptTime;
+
     @Column(name = "WAKEUP_TIME")
     private Date wakeUpTime;
+
     @Column(name = "TOTAL_SLEEP_TIME")
     private Long totalSleepTime;
 }

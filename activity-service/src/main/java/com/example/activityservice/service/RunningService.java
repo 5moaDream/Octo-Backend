@@ -30,7 +30,7 @@ public class RunningService {
         Date tomorrowDate = new Date(currentDate.getTime() + (1000 * 60 * 60 * 24));
         Date sevenDaysAgoDate = new Date(currentDate.getTime() - (1000 * 60 * 60 * 24 * 7));
 
-        return runningRepository.findAllByRunningTimeBetweenAndUserId(sevenDaysAgoDate, tomorrowDate, userId);
+        return runningRepository.findAllByCreatedTimeBetweenAndUserId(sevenDaysAgoDate, tomorrowDate, userId);
     }
 
     public List<RunningEntity> findAllRunningById(Long userId) {

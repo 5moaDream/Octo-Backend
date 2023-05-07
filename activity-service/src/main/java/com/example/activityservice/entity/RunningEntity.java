@@ -21,10 +21,13 @@ public class RunningEntity {
     @NotNull
     private Long userId;
 
-    @Column(name = "RUNNING_TIME")
-    private Date runningTime;
+    @Temporal(value = TemporalType.TIMESTAMP)
+    @Column(name = "CREATED_TIME")
+    private Date createdTime;
+
     @Column(name = "TOTAL_RUNNING_TIME")
     private int totalRunningTime;
+
     @Column(name = "DISTANCE")
     private float distance;
 }
