@@ -13,7 +13,6 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/activity-service")
 public class SleepController {
     final SleepService sleepService;
 

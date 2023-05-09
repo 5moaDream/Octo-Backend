@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/order-service")
 @RequiredArgsConstructor
 public class OrderController {
     final PaymentRepository paymentRepository;

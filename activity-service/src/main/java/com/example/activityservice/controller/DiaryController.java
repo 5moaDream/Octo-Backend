@@ -16,7 +16,6 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/activity-service")
 public class DiaryController {
     final DiaryRepository diaryRepository;
     final RunningRepository runningRepository;

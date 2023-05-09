@@ -13,7 +13,6 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/activity-service")
 public class RunningController {
     final RunningService runningService;
 
