@@ -1,0 +1,68 @@
+package com.example.userservice.service;
+
+import com.example.userservice.domain.UserEntity;
+import com.example.userservice.dto.FriendDTO;
+import com.example.userservice.dto.KakaoFriend;
+import com.example.userservice.dto.KakaoUserDTO;
+import com.example.userservice.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+public class UserService {
+    private final UserRepository userRepository;
+
+    /**유저 생성*/
+    public UserEntity createUser(KakaoUserDTO kakaoUserDTO) {
+        UserEntity user = UserEntity.builder()
+                            .userId(kakaoUserDTO.getId())
+                            .thumbnailImageUrl(kakaoUserDTO.getKakao_account().getProfile().getThumbnail_image_url())
+                            .build();
+
+        UserEntity result = userRepository.save(user);
+        return result;
+    }
+
+    /**유저 조회*/
+    public Optional<UserEntity> findUser(Long userId){
+        Optional<UserEntity> user = userRepository.findById(userId);
+        return user;
+    }
+
+    /**유저 정보 업데이트*/
+    public void updateUser(UserEntity user) throws SQLException {
+        userRepository.save(user);
+    }
+
+    /**친구 조회(카카오 친구로)*/
+    public List<FriendDTO> getFriends(KakaoFriend friends){
+        KakaoFriend.Friend[] friendArray = friends.getFriends();
+        List<Long> friendIds = new ArrayList<>();
+        List<FriendDTO> responseFriendList = new ArrayList<>();
+
+        //where 절에 넣을 id list 생성
+        for(int i=0; i<friendArray.length; i++)
+            friendIds.add(friendArray[i].getId());
+
+        //친구 유저를 다 찾아옴
+        List<UserEntity> userList = userRepository.findAllByUserIdIn(friendIds);
+
+        //유저 DTO list 생성
+        for(UserEntity u : userList){
+            for(KakaoFriend.Friend k : friends.getFriends()){
+                if(k.getId() == u.getUserId()){
+                    FriendDTO friend = new FriendDTO(u.getUserId(), k.getProfile_nickname(), u.getCharacterUrl());
+                    responseFriendList.add(friend);
+                    break;
+                }
+            }
+        }
+        return responseFriendList;
+    }
+}

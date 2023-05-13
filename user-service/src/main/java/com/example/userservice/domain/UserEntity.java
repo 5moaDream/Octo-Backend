@@ -1,8 +1,9 @@
-package com.example.userservice.Login.domain;
+package com.example.userservice.domain;
 
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Date;
 
 
 @Builder
@@ -28,4 +29,13 @@ public class UserEntity {
 
     @Column(name = "STATE_MSG")
     private String stateMsg;
+
+    @Column(name = "TARGET_SLEEP_TIME")
+    private int sleepTime;
+
+    @Column(name = "TARGET_RUNNING_DISTANCE")
+    private float distance;
+
+    @Column(name = "D_DAY")
+    private Date dday;
 }

@@ -1,4 +1,4 @@
-package com.example.userservice.Friends.dto;
+package com.example.userservice.dto;
 
 import lombok.*;
 

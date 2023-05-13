@@ -3,7 +3,6 @@
 //import com.epages.restdocs.apispec.ResourceSnippetParameters;
 //import com.epages.restdocs.apispec.Schema;
 //import com.example.userservice.setting.domain.SettingEntity;
-//import com.example.userservice.setting.dto.FirstSettingDTO;
 //import com.fasterxml.jackson.databind.ObjectMapper;
 //import org.junit.jupiter.api.DisplayName;
 //import org.junit.jupiter.api.Test;
@@ -132,7 +131,6 @@
 //    @DisplayName("첫 로그인 시 유저정보 세팅")
 //    void 첫_로그인_유저정보_세팅() throws Exception {
 //        //given
-//        FirstSettingDTO firstSettingDTO = new FirstSettingDTO();
 //
 //        firstSettingDTO.setUserId(2713582482L);
 //        firstSettingDTO.setCharacterName("나의 문어");

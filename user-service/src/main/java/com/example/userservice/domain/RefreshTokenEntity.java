@@ -1,4 +1,4 @@
-package com.example.userservice.token.domain;
+package com.example.userservice.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
