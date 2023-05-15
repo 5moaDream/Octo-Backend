@@ -15,26 +15,28 @@ import java.util.Date;
 public class UserEntity {
     @Id
     @Column(name = "USER_PK")
-    private long userId;    //kakao user id
-
-    @Column(name = "THUMBNAIL_IMAGE_URL")
-    private String thumbnailImageUrl;
+    private Long userId;    //kakao user id
 
     @Column(name = "CHARACTER_NM")
     private String characterName;
-    @Column(name = "EXPERIENCE_VALUE")
-    private int experienceValue;
+
     @Column(name = "CHARACTER_IMAGE_URL")
     private String characterUrl;
+
+    @Column(name = "EXPERIENCE_VALUE")
+    private Integer experienceValue;
 
     @Column(name = "STATE_MSG")
     private String stateMsg;
 
+    @Column(name = "THUMBNAIL_IMAGE_URL")
+    private String thumbnailImageUrl;
+
     @Column(name = "TARGET_SLEEP_TIME")
-    private int sleepTime;
+    private Integer sleepTime;
 
     @Column(name = "TARGET_RUNNING_DISTANCE")
-    private float distance;
+    private Float distance;
 
     @Column(name = "D_DAY")
     private Date dday;

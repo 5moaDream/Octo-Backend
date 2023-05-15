@@ -11,7 +11,7 @@ import javax.persistence.Id;
 public class CharacterEntity {
     @Id
     @Column(name = "CHARACTER_PK")
-    long characterId;
+    Long characterId;
 
     @Column(name = "CHARACTER_NM")
     String characterName;

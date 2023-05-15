@@ -89,17 +89,27 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
-    /**유저정보 업데이트*/
-    @PutMapping("/user")
-    public HttpStatus firstSetting(@RequestBody UserEntity userEntity){
-        try {
-            userService.updateUser(userEntity);
-            return HttpStatus.OK;
-        } catch (SQLException e) {
-            return HttpStatus.INTERNAL_SERVER_ERROR;
-        }
+    /**목표 설정*/
+    @PutMapping("/target/sleep/{sleepTime}/distance/{distance}")
+    public HttpStatus updateTarget(@RequestParam("id") Long userId, @PathVariable("sleepTime") int sleepTime, @PathVariable("distance") float distance){
+        userService.updateTarget(userId, sleepTime, distance);
+        return HttpStatus.OK;
     }
 
+    /**상태 메세지 변경*/
+    @PutMapping("/msg/{stateMSG}")
+    public HttpStatus updateStateMSG(@RequestParam("id") Long userId, @PathVariable("stateMSG") String stateMSG){
+        userService.updateStateMSG(userId, stateMSG);
+        return HttpStatus.OK;
+    }
+
+
+    /**캐릭터 이름 변경*/
+    @PutMapping("/name/{name}")
+    public HttpStatus updateCharacterName(@RequestParam("id") Long userId, @PathVariable("name") String name){
+        userService.updateCharacterName(userId, name);
+        return HttpStatus.OK;
+    }
 
 
 
@@ -107,20 +117,17 @@ public class UserController {
     @GetMapping("/collection")
     public ResponseEntity<List<CharacterEntity>> findCollection(@RequestParam("id") Long userId){
         List<CharacterEntity> characterEntityList = null;
-        try {
-            characterEntityList = characterService.findMyCharacter(userId);
-            return ResponseEntity.status(HttpStatus.OK).body(characterEntityList);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(characterEntityList);
-        }
+        characterEntityList = characterService.findMyCharacter(userId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(characterEntityList);
     }
 
 
 
 
     /**친구 정보 불러오기*/
-    @GetMapping("/kakao-friends")
-    public ResponseEntity<List<FriendDTO>> findKakaoFriendsList(@RequestBody String accessToken, @RequestParam("offset") int offset){
+    @GetMapping("/kakao-friends/{accessToken}")
+    public ResponseEntity<List<FriendDTO>> findKakaoFriendsList(@PathVariable String accessToken, @RequestParam("offset") int offset){
         KakaoFriend responseFriends = kakaoService.getKakaoFriends(accessToken, offset);
 
         if(responseFriends == null)

@@ -9,9 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -35,10 +35,26 @@ public class UserService {
         return user;
     }
 
-    /**유저 정보 업데이트*/
-    public void updateUser(UserEntity user) throws SQLException {
-        userRepository.save(user);
+    /**목표 설정*/
+    public void updateTarget(Long userId, int sleepTime, float distance) {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.MONTH, +1);
+        Date dday = cal.getTime();
+
+        userRepository.updateTarget(userId, sleepTime, distance, dday);
     }
+
+    /**상태 메세지 변경*/
+    public void updateStateMSG(Long userId, String stateMSG) {
+        userRepository.updateStateMSG(userId, stateMSG);
+    }
+
+    /**캐릭터 이름 변경*/
+    public void updateCharacterName(Long userId, String stateMSG) {
+        userRepository.updateCharacterName(userId, stateMSG);
+    }
+
+
 
     /**친구 조회(카카오 친구로)*/
     public List<FriendDTO> getFriends(KakaoFriend friends){

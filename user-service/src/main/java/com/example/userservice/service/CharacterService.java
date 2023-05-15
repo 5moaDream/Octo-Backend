@@ -17,7 +17,7 @@ public class CharacterService {
     final CollectionRepository collectionRepository;
 
 
-    public List<CharacterEntity> findMyCharacter(Long userId) throws Exception{
+    public List<CharacterEntity> findMyCharacter(Long userId) {
         List<CollectionEntity> collectionEntityList = collectionRepository.findAllByUserFk(userId);
         List<Long> characterIds = new ArrayList<>();
 
