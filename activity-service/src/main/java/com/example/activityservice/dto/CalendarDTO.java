@@ -1,8 +1,9 @@
 package com.example.activityservice.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 @Data
@@ -12,19 +13,22 @@ public class CalendarDTO {
     private List<SleepDTO> sleepList;
 
     @Data
-    public class DiaryDTO{
+    @AllArgsConstructor
+    public static class DiaryDTO{
         private Date today;
         private String content;
     }
 
     @Data
-    public class RunningDTO{
+    @AllArgsConstructor
+    public static class RunningDTO{
         private Date today;
-        private float totalDistance;
+        private Double totalDistance;
     }
 
     @Data
-    public class SleepDTO{
+    @AllArgsConstructor
+    public static class SleepDTO{
         private Date today;
         private int sleepTime;
     }

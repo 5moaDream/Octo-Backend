@@ -1,0 +1,593 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "rest docs + swagger UI",
+    "description" : "My API description",
+    "version" : "0.0.1"
+  },
+  "servers" : [ {
+    "url" : "https://3.39.126.140:8000"
+  } ],
+  "tags" : [ ],
+  "paths" : {
+    "/calender/{month}" : {
+      "get" : {
+        "tags" : [ "캘린더 기록 조회" ],
+        "description" : "캘린더 조회 시 보여줄 러닝, 수면, 다이어리의 날짜 별 데이터",
+        "operationId" : "캘린더 기록 조회",
+        "parameters" : [ {
+          "name" : "month",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/calender-month-143634905"
+                },
+                "examples" : {
+                  "캘린더 기록 조회" : {
+                    "value" : "{\"diaryList\":[{\"today\":\"2023-05-01\",\"content\":\"{\\\"content\\\":\\\"오늘의 일기\\\"}\"}],\"runningList\":[{\"today\":\"2023-05-03\",\"totalDistance\":2.2}],\"sleepList\":[{\"today\":\"2023-05-12\",\"sleepTime\":480},{\"today\":\"2023-05-15\",\"sleepTime\":480}]}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/diary" : {
+      "put" : {
+        "tags" : [ "다이어리 작성" ],
+        "description" : "다이어리 작성",
+        "operationId" : "다이어리 작성",
+        "requestBody" : {
+          "content" : {
+            "application/json;charset=UTF-8" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Request.Content"
+              },
+              "examples" : {
+                "다이어리 작성" : {
+                  "value" : "{\n  \"content\" : \"오늘의 일기\"\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/sleep486549215"
+                },
+                "examples" : {
+                  "다이어리 작성" : {
+                    "value" : "\"CREATED\""
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/guest-book" : {
+      "get" : {
+        "tags" : [ "방명록 전체 조회" ],
+        "description" : "유저아이디에 해당하는 방명록 전체 조회",
+        "operationId" : "방명록 전체 조회",
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Response.List<GuestBook>"
+                },
+                "examples" : {
+                  "방명록 전체 조회" : {
+                    "value" : "[ {\n  \"guestBookId\" : 6,\n  \"userId\" : 1,\n  \"guestId\" : 2,\n  \"content\" : \"방명록3\",\n  \"read\" : true,\n  \"createdTime\" : \"2023-05-16T15:00:00.000+00:00\"\n}, {\n  \"guestBookId\" : 7,\n  \"userId\" : 1,\n  \"guestId\" : 2,\n  \"content\" : \"방명록3\",\n  \"read\" : true,\n  \"createdTime\" : \"2023-05-16T15:00:00.000+00:00\"\n}, {\n  \"guestBookId\" : 8,\n  \"userId\" : 1,\n  \"guestId\" : 2,\n  \"content\" : \"방명록3\",\n  \"read\" : true,\n  \"createdTime\" : \"2023-05-16T15:00:00.000+00:00\"\n}, {\n  \"guestBookId\" : 9,\n  \"userId\" : 1,\n  \"guestId\" : 2,\n  \"content\" : \"방명록3\",\n  \"read\" : true,\n  \"createdTime\" : \"2023-05-17T04:38:36.374+00:00\"\n}, {\n  \"guestBookId\" : 10,\n  \"userId\" : 1,\n  \"guestId\" : 2,\n  \"content\" : \"방명록3\",\n  \"read\" : false,\n  \"createdTime\" : \"2023-05-17T04:39:31.765+00:00\"\n} ]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "방명록 작성" ],
+        "description" : "방명록 작성",
+        "operationId" : "방명록 작성",
+        "requestBody" : {
+          "content" : {
+            "application/json;charset=UTF-8" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Request.GuestBook"
+              },
+              "examples" : {
+                "방명록 작성" : {
+                  "value" : "{\n  \"userId\" : 1,\n  \"content\" : \"방명록3\"\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/sleep486549215"
+                },
+                "examples" : {
+                  "방명록 작성" : {
+                    "value" : "\"CREATED\""
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/guest-book/unread" : {
+      "get" : {
+        "tags" : [ "안읽은 방명록 조회" ],
+        "description" : "유저아이디에 해당하는 방명록 중 안읽은 방명록 조회",
+        "operationId" : "안읽은 방명록 조회",
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/guest-book-unread1544046794"
+                },
+                "examples" : {
+                  "안읽은 방명록 조회" : {
+                    "value" : "[ {\n  \"guestBookId\" : 10,\n  \"userId\" : 1,\n  \"guestId\" : 2,\n  \"content\" : \"방명록3\",\n  \"read\" : false,\n  \"createdTime\" : \"2023-05-17T04:39:31.765+00:00\"\n} ]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/running" : {
+      "post" : {
+        "tags" : [ "러닝 기록" ],
+        "description" : "러닝 정보 기록",
+        "operationId" : "러닝 기록",
+        "requestBody" : {
+          "content" : {
+            "application/json;charset=UTF-8" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Request.Running"
+              },
+              "examples" : {
+                "러닝 기록" : {
+                  "value" : "{\n  \"createdTime\" : \"2023-05-17T13:50:01.531079\",\n  \"totalRunningTime\" : 18,\n  \"distance\" : 2.2\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/sleep486549215"
+                },
+                "examples" : {
+                  "러닝 기록" : {
+                    "value" : "\"CREATED\""
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/running/today" : {
+      "get" : {
+        "tags" : [ "오늘 러닝 기록 조회" ],
+        "description" : "유저의 오늘 러닝 기록 조회",
+        "operationId" : "오늘 러닝 기록 조회",
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Response.List<Running>"
+                },
+                "examples" : {
+                  "오늘 러닝 기록 조회" : {
+                    "value" : "[ {\n  \"runningId\" : 4,\n  \"userId\" : 1,\n  \"createdTime\" : \"2023-05-17T13:50:01.531+00:00\",\n  \"totalRunningTime\" : 18,\n  \"distance\" : 2.2\n} ]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/running/week" : {
+      "get" : {
+        "tags" : [ "이번 주 러닝 기록 조회" ],
+        "description" : "유저의 일주일 러닝 기록 조회",
+        "operationId" : "이번 주 러닝 기록 조회",
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Response.List<Running>"
+                },
+                "examples" : {
+                  "이번 주 러닝 기록 조회" : {
+                    "value" : "[ {\n  \"runningId\" : 4,\n  \"userId\" : 1,\n  \"createdTime\" : \"2023-05-17T13:50:01.531+00:00\",\n  \"totalRunningTime\" : 18,\n  \"distance\" : 2.2\n} ]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sleep" : {
+      "get" : {
+        "tags" : [ "당일 수면 기록 조회" ],
+        "description" : "당일 수면 기록 조회",
+        "operationId" : "당일 수면 기록 조회",
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Response.Sleep"
+                },
+                "examples" : {
+                  "당일 수면 기록 조회" : {
+                    "value" : "{\n  \"sleepId\" : 21,\n  \"userId\" : 2713582482,\n  \"sleptTime\" : \"2023-05-16T23:20:22.000+00:00\",\n  \"wakeUpTime\" : \"2023-05-17T07:20:22.000+00:00\",\n  \"totalSleepTime\" : 480\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "수면 기록" ],
+        "description" : "수면 정보 기록",
+        "operationId" : "수면 기록",
+        "requestBody" : {
+          "content" : {
+            "application/json;charset=UTF-8" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Request.Sleep"
+              },
+              "examples" : {
+                "수면 기록" : {
+                  "value" : "{\n  \"sleptTime\" : \"2023-05-16T23:20:22\",\n  \"wakeUpTime\" : \"2023-05-17T07:20:22\",\n  \"totalSleepTime\" : 480\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/sleep486549215"
+                },
+                "examples" : {
+                  "수면 기록" : {
+                    "value" : "\"CREATED\""
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sleep/all" : {
+      "get" : {
+        "tags" : [ "모든 수면 기록 조회" ],
+        "description" : "모든 수면 기록 조회",
+        "operationId" : "모든 수면 기록 조회",
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Response.Sleep"
+                },
+                "examples" : {
+                  "모든 수면 기록 조회" : {
+                    "value" : "[ {\n  \"sleepId\" : 12,\n  \"userId\" : 2713582482,\n  \"sleptTime\" : \"2023-05-12T11:20:22.000+00:00\",\n  \"wakeUpTime\" : \"2023-05-13T02:20:22.000+00:00\",\n  \"totalSleepTime\" : 480\n}, {\n  \"sleepId\" : 13,\n  \"userId\" : 2713582482,\n  \"sleptTime\" : \"2023-05-15T11:20:22.000+00:00\",\n  \"wakeUpTime\" : \"2023-05-16T02:20:22.000+00:00\",\n  \"totalSleepTime\" : 480\n}, {\n  \"sleepId\" : 21,\n  \"userId\" : 2713582482,\n  \"sleptTime\" : \"2023-05-16T23:20:22.000+00:00\",\n  \"wakeUpTime\" : \"2023-05-17T07:20:22.000+00:00\",\n  \"totalSleepTime\" : 480\n} ]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Request.Running" : {
+        "title" : "Request.Running",
+        "type" : "object",
+        "properties" : {
+          "distance" : {
+            "type" : "number",
+            "description" : "달린 거리"
+          },
+          "createdTime" : {
+            "type" : "string",
+            "description" : "러닝 시작 시간"
+          },
+          "totalRunningTime" : {
+            "type" : "number",
+            "description" : "총 러닝 시간"
+          }
+        }
+      },
+      "guest-book-unread1544046794" : {
+        "type" : "array",
+        "description" : "guestBook",
+        "items" : {
+          "type" : "object",
+          "properties" : {
+            "guestBookId" : {
+              "type" : "number",
+              "description" : "방명록 아이디"
+            },
+            "read" : {
+              "type" : "boolean",
+              "description" : "읽음 상태"
+            },
+            "createdTime" : {
+              "type" : "string",
+              "description" : "작성 시간"
+            },
+            "guestId" : {
+              "type" : "number",
+              "description" : "작성자 아이디"
+            },
+            "userId" : {
+              "type" : "number",
+              "description" : "유저 아이디"
+            },
+            "content" : {
+              "type" : "string",
+              "description" : "내용"
+            }
+          },
+          "description" : "guestBook"
+        }
+      },
+      "Request.Content" : {
+        "title" : "Request.Content",
+        "type" : "object",
+        "properties" : {
+          "content" : {
+            "type" : "string",
+            "description" : "다이어리 내용"
+          }
+        }
+      },
+      "Response.Sleep" : {
+        "title" : "Response.Sleep",
+        "type" : "array",
+        "description" : "sleep",
+        "items" : {
+          "type" : "object",
+          "properties" : {
+            "totalSleepTime" : {
+              "type" : "number",
+              "description" : "총 수면 시간"
+            },
+            "sleepId" : {
+              "type" : "number",
+              "description" : "수면 아이디"
+            },
+            "sleptTime" : {
+              "type" : "string",
+              "description" : "수면 시작 시간"
+            },
+            "userId" : {
+              "type" : "number",
+              "description" : "유저 아이디"
+            },
+            "wakeUpTime" : {
+              "type" : "string",
+              "description" : "기상 시간"
+            }
+          },
+          "description" : "sleep"
+        }
+      },
+      "Response.List<Running>" : {
+        "title" : "Response.List<Running>",
+        "type" : "array",
+        "description" : "running",
+        "items" : {
+          "type" : "object",
+          "properties" : {
+            "distance" : {
+              "type" : "number",
+              "description" : "달린 거리"
+            },
+            "createdTime" : {
+              "type" : "string",
+              "description" : "러닝 시작 시간"
+            },
+            "runningId" : {
+              "type" : "number",
+              "description" : "러닝 아이디"
+            },
+            "totalRunningTime" : {
+              "type" : "number",
+              "description" : "총 러닝 시간"
+            },
+            "userId" : {
+              "type" : "number",
+              "description" : "유저 아이디"
+            }
+          },
+          "description" : "running"
+        }
+      },
+      "calender-month-143634905" : {
+        "type" : "object",
+        "properties" : {
+          "runningList" : {
+            "type" : "array",
+            "description" : "러닝 기록",
+            "items" : {
+              "type" : "object",
+              "properties" : {
+                "today" : {
+                  "type" : "string",
+                  "description" : "러닝 날짜"
+                },
+                "totalDistance" : {
+                  "type" : "number",
+                  "description" : "총 러닝 거리"
+                }
+              }
+            }
+          },
+          "diaryList" : {
+            "type" : "array",
+            "description" : "다이어리 기록",
+            "items" : {
+              "type" : "object",
+              "properties" : {
+                "today" : {
+                  "type" : "string",
+                  "description" : "다이어리 날짜"
+                },
+                "content" : {
+                  "type" : "string",
+                  "description" : "다이어리 내용"
+                }
+              }
+            }
+          },
+          "sleepList" : {
+            "type" : "array",
+            "description" : "수면 기록",
+            "items" : {
+              "type" : "object",
+              "properties" : {
+                "today" : {
+                  "type" : "string",
+                  "description" : "수면 날짜"
+                },
+                "sleepTime" : {
+                  "type" : "number",
+                  "description" : "수면 시간"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Request.Sleep" : {
+        "title" : "Request.Sleep",
+        "type" : "object",
+        "properties" : {
+          "totalSleepTime" : {
+            "type" : "number",
+            "description" : "총 수면 시간"
+          },
+          "sleptTime" : {
+            "type" : "string",
+            "description" : "수면 시작 시간"
+          },
+          "wakeUpTime" : {
+            "type" : "string",
+            "description" : "기상 시간"
+          }
+        }
+      },
+      "Response.List<GuestBook>" : {
+        "title" : "Response.List<GuestBook>",
+        "type" : "array",
+        "description" : "guestBook",
+        "items" : {
+          "type" : "object",
+          "properties" : {
+            "guestBookId" : {
+              "type" : "number",
+              "description" : "방명록 아이디"
+            },
+            "read" : {
+              "type" : "boolean",
+              "description" : "읽음 상태"
+            },
+            "createdTime" : {
+              "type" : "string",
+              "description" : "작성 시간"
+            },
+            "guestId" : {
+              "type" : "number",
+              "description" : "작성자 아이디"
+            },
+            "userId" : {
+              "type" : "number",
+              "description" : "유저 아이디"
+            },
+            "content" : {
+              "type" : "string",
+              "description" : "내용"
+            }
+          },
+          "description" : "guestBook"
+        }
+      },
+      "sleep486549215" : {
+        "type" : "object"
+      },
+      "Request.GuestBook" : {
+        "title" : "Request.GuestBook",
+        "type" : "object",
+        "properties" : {
+          "userId" : {
+            "type" : "number",
+            "description" : "유저 아이디"
+          },
+          "content" : {
+            "type" : "string",
+            "description" : "내용"
+          }
+        }
+      }
+    }
+  }
+}

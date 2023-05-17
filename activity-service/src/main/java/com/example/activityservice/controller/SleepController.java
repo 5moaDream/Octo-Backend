@@ -18,25 +18,29 @@ public class SleepController {
 
     /**수면 시간 기록*/
     @PostMapping("/sleep")
-    public ResponseEntity<SleepEntity> createSleep(@RequestParam("id") Long userId, @RequestBody SleepEntity sleep){
+    public HttpStatus recodeSleep(@RequestParam("id") Long userId, @RequestBody SleepEntity sleep){
         //경험치 처리, 당일 수면기록 체크 필요
         sleep.setUserId(userId);
         SleepEntity responseSleep = sleepService.createSleep(sleep);
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseSleep);
+
+        if(responseSleep == null)
+            return HttpStatus.BAD_REQUEST;
+
+        return HttpStatus.CREATED;
     }
     /**당일 수면 시간 조회*/
     @GetMapping("/sleep")
-    public ResponseEntity<List<SleepEntity>> findSleep(@RequestParam("id") Long userId){
-        List<SleepEntity> result = sleepService.findSleepById(userId);
+    public ResponseEntity<SleepEntity> findTodaySleep(@RequestParam("id") Long userId){
+        SleepEntity result = sleepService.findTodaySleepByUserId(userId);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     /**모든 수면 기록 조회*/
     @GetMapping("/sleep/all")
     public ResponseEntity<List<SleepEntity>> findAllSleep(@RequestParam("id") Long userId,
-                                      @PageableDefault(page = 0, size = 10, sort = "sleptTime") Pageable pageable){
+                                      @PageableDefault(page = 0, size = 30, sort = "sleptTime") Pageable pageable){
         //페이징
-        List<SleepEntity> result = sleepService.findAllSleepById(userId);
+        List<SleepEntity> result = sleepService.findAllSleepById(userId, pageable);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 }

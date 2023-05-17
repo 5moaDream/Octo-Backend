@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.sql.Timestamp;
 
 @Entity
 @Data
@@ -22,11 +22,11 @@ public class SleepEntity {
     private Long userId;
 
     @Column(name = "SLEPT_TIME")
-    private Date sleptTime;
+    private Timestamp sleptTime;
 
     @Column(name = "WAKEUP_TIME")
-    private Date wakeUpTime;
+    private Timestamp wakeUpTime;
 
     @Column(name = "TOTAL_SLEEP_TIME")
-    private Long totalSleepTime;
+    private int totalSleepTime;
 }

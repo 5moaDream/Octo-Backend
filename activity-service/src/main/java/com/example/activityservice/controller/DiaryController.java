@@ -10,8 +10,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 @RestController
@@ -24,11 +27,11 @@ public class DiaryController {
 
     /**다이어리 작성*/
     @PutMapping("/diary")
-    public HttpStatus createCalender(@RequestParam("id") Long userId, @RequestBody String content){
+    public HttpStatus writeDiary(@RequestParam("id") Long userId, @RequestBody String content){
         DiaryEntity diary = DiaryEntity.builder()
                                         .userId(userId)
                                         .content(content)
-                                        .createdTime(new Date())
+                                        .createdTime(new Date(System.currentTimeMillis()))
                                         .build();
 
         diaryRepository.save(diary);
@@ -38,19 +41,54 @@ public class DiaryController {
 
     /**모든 기록 조회*/
     @GetMapping("/calender/{month}")
-    public ResponseEntity<CalendarDTO> findAllCalender(@RequestParam("id") Long userId, @PathVariable("month") Date month){
+    public ResponseEntity<CalendarDTO> findAllCalender(@RequestParam("id") Long userId, @PathVariable String month) throws ParseException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date(simpleDateFormat.parse(month).getTime());
+
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(month);
+        calendar.setTime(date);
 
-        calendar.set(Calendar.DAY_OF_MONTH,1);
-        Date startDate = calendar.getTime();
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        Date startDate = new Date(calendar.getTimeInMillis());
 
-        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-        Date endDate = calendar.getTime();
+        calendar.add(Calendar.MONTH, 1);
+        Date endDate = new Date(calendar.getTimeInMillis());
 
-        List<CalendarDTO.DiaryDTO> diaryList = diaryRepository.findDiaryByDate(startDate, endDate, userId);
-        List<CalendarDTO.RunningDTO> runningList = runningRepository.findRunningByDate(startDate, endDate, userId);
-        List<CalendarDTO.SleepDTO> sleepList = sleepRepository.findSleepByDate(startDate, endDate, userId);
+        List<Object> diaryListTmp = diaryRepository.findDiaryByDate(startDate, endDate, userId);
+        List<CalendarDTO.DiaryDTO> diaryList = new ArrayList<>();
+
+        for (Object o : diaryListTmp) {
+            Object[] sublist = (Object[]) o;
+
+            Date today = (Date) sublist[0];
+            String content = (String) sublist[1];
+
+            diaryList.add(new CalendarDTO.DiaryDTO(today, content));
+        }
+
+        List<Object> runningListTmp = runningRepository.findRunningByDate(startDate, endDate, userId);
+        List<CalendarDTO.RunningDTO> runningList = new ArrayList<>();
+
+        for (Object o : runningListTmp) {
+            Object[] sublist = (Object[]) o;
+
+            Date today = (Date) sublist[0];
+            Double distance = (Double) sublist[1];
+
+            runningList.add(new CalendarDTO.RunningDTO(today, distance));
+        }
+
+        List<Object> sleepListTmp = sleepRepository.findSleepByDate(startDate, endDate, userId);
+        List<CalendarDTO.SleepDTO> sleepList = new ArrayList<>();
+
+        for (Object o : sleepListTmp) {
+            Object[] sublist = (Object[]) o;
+
+            Date today = (Date) sublist[0];
+            Integer sleepTime = (Integer) sublist[1];
+
+            sleepList.add(new CalendarDTO.SleepDTO(today, sleepTime));
+        }
 
         CalendarDTO calendarDTO = new CalendarDTO();
         calendarDTO.setDiaryList(diaryList);

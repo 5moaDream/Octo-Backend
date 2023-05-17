@@ -4,7 +4,7 @@ import com.example.activityservice.entity.RunningEntity;
 import com.example.activityservice.repository.RunningRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 
@@ -26,7 +26,7 @@ public class RunningService {
     }
 
     public List<RunningEntity> findWeekRunningById(Long userId) {
-        Date currentDate = new Date();
+        Date currentDate = new Date(System.currentTimeMillis());
         Date tomorrowDate = new Date(currentDate.getTime() + (1000 * 60 * 60 * 24));
         Date sevenDaysAgoDate = new Date(currentDate.getTime() - (1000 * 60 * 60 * 24 * 7));
 

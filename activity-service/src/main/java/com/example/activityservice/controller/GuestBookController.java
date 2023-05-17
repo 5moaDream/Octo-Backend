@@ -21,7 +21,7 @@ public class GuestBookController {
     /**방명록 작성*/
     @PostMapping("/guest-book")
     public HttpStatus createGuestBook(@RequestParam("id") Long userId, @RequestBody GuestBookEntity guestBook){
-        guestBook.setUserId(userId);
+        guestBook.setGuestId(userId);
         return guestBookService.createGuestBook(guestBook);
     }
 
@@ -44,27 +44,10 @@ public class GuestBookController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-//    @ExceptionHandler(NullPointerException.class) 컨트롤러에서 발생하는 모든 예외를 처리 = 각 메소드에 try 없어도 됨
-
-
-//    /**방명록 업데이트*/
-//    @PutMapping("/{guestBookId}")
-//    public ResponseEntity<GuestBookEntity> modifyGuestBook(@RequestBody GuestBookEntity guestBook ){
-//        GuestBookEntity responseGuestBook = guestBookService.modifyGuestBookById(guestBook);
-//        return ResponseEntity.status(HttpStatus.OK).body(responseGuestBook);
-//    }
 //    /**방명록 삭제*/
-//    @DeleteMapping("/{guestBookId}")
-//    public ResponseEntity<Boolean> deleteGuestBook(@PathVariable Long guestBookId){
-//        Boolean result = guestBookService.deleteGuestBookById(guestBookId);
-//        return ResponseEntity.status(HttpStatus.OK).body(result);
-//    }
-
-
-//    /**댓글 읽음 처리*/
-//    @PutMapping("/read/{guestBookId}")
-//    public HttpStatus readComment(@PathVariable Long guestBookId){
-//        guestBookService.readComment(guestBookId);
-//        return HttpStatus.OK;
+//    @DeleteMapping("/guest-book/{guestBookId}")
+//    public ResponseEntity<Void> deleteGuestBook(@PathVariable Long guestBookId){
+//        guestBookService.deleteGuestBookById(guestBookId);
+//        return ResponseEntity.status(HttpStatus.OK).body(null);
 //    }
 }

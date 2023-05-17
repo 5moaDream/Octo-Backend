@@ -1,14 +1,16 @@
 package com.example.activityservice.repository;
 
-import com.example.activityservice.dto.CalendarDTO;
 import com.example.activityservice.entity.RunningEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
+@Repository
 public interface RunningRepository extends JpaRepository<RunningEntity, Long>, JpaSpecificationExecutor<RunningEntity> {
     List<RunningEntity> findAllByUserId(Long userId);
 
@@ -22,7 +24,7 @@ public interface RunningRepository extends JpaRepository<RunningEntity, Long>, J
             "WHERE r.createdTime BETWEEN :startDate AND :endDate AND r.userId = :userId " +
             "GROUP BY DATE(r.createdTime) " +
             "ORDER BY DATE(r.createdTime) ASC")
-    List<CalendarDTO.RunningDTO> findRunningByDate(Date startDate, Date endDate, Long userId);
+    List<Object> findRunningByDate(@Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("userId") Long userId);
 
 
 }

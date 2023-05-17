@@ -3,13 +3,12 @@ package com.example.activityservice.service;
 import com.example.activityservice.entity.GuestBookEntity;
 import com.example.activityservice.repository.GuestBookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -24,7 +23,7 @@ public class GuestBookService {
 
     /**방명록 작성*/
     public HttpStatus createGuestBook(GuestBookEntity guestBook) {
-        guestBook.setCreatedTime(new Date());
+        guestBook.setCreatedTime(new Timestamp(System.currentTimeMillis()));
         guestBook.setRead(false);
         guestBookRepository.save(guestBook);
         return HttpStatus.CREATED;
@@ -56,19 +55,13 @@ public class GuestBookService {
 
     /**방명록 수정*/
     public GuestBookEntity modifyGuestBookById(GuestBookEntity guestBookEntity) {
-        guestBookEntity.setCreatedTime(new Date());
+        guestBookEntity.setCreatedTime(new Timestamp(System.currentTimeMillis()));
         return guestBookRepository.save(guestBookEntity);
 
     }
 
     /**방명록 삭제*/
-    public boolean deleteGuestBookById(Long guestBookId) {
-        try{
-            guestBookRepository.deleteById(guestBookId);
-            return true;
-        }
-        catch (Exception e){
-            return false;
-        }
+    public void deleteGuestBookById(Long guestBookId) {
+        guestBookRepository.deleteById(guestBookId);
     }
 }

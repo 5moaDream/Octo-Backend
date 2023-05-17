@@ -41,7 +41,7 @@ public class RunningController {
     /**모든 러닝 기록 조회*/
     @GetMapping("/running/all")
     public ResponseEntity<List<RunningEntity>> findAllRunning(@RequestParam("id") Long userId,
-                                                              @PageableDefault(page = 0, size = 30, sort = "createdTime") Pageable pageable){
+                                                              @PageableDefault(page = 0, size = 50, sort = "createdTime") Pageable pageable){
         List<RunningEntity> responseRunnings = runningService.findAllRunningById(userId);
         return ResponseEntity.status(HttpStatus.OK).body(responseRunnings);
     }

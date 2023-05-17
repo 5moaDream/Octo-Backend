@@ -8,7 +8,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.sql.Date;
 
 @Builder
 @Entity
@@ -30,7 +30,6 @@ public class DiaryEntity {
     @Length(max = 100)
     private String content;
 
-    @Temporal(value = TemporalType.TIMESTAMP)
     @Column(name = "CREATED_TIME")
     private Date createdTime;
 }
