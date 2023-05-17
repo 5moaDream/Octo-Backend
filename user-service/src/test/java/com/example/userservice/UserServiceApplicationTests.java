@@ -38,7 +38,7 @@ class UserServiceApplicationTests {
     @DisplayName("카카오 로그인")
     void 카카오_로그인() throws Exception {
         //given
-        String kakaoToken = "qDNqG2vcgmd3ro1nttwxDMykUz-tVR2etQ1arhDCCisM0gAAAYgdt2cN";
+        String kakaoToken = "Gkv5ltL0dkL1mhw-NPFXRju5mcimFlDE6bQtzcoNCisNHgAAAYgoebFG";
 
         //when
         mockMvc.perform(get("/unauthorization/kakao-login")
@@ -67,31 +67,58 @@ class UserServiceApplicationTests {
     }
 
 //    @Test
-//    @DisplayName("토큰 재발급")
-//    void 토큰_재발급() throws Exception {
-//        String fresh_token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyNzEzNTgyNDgyIiwiZXhwIjoxNjg1NTA0MTg3fQ.tb6w5VsSWRklGsPzW2THFFnj1uc-wBd3uoZ04FSl2p3l1OVDHDzLu_jnTDvOFKhmIXudTGVdCuQ6tiJ6zpJgOA";
+//    @DisplayName("친구 정보 불러오기")
+//    void 친구_정보_불러오기() throws Exception {
+//        //given
+//        String kakaoToken = "Gkv5ltL0dkL1mhw-NPFXRju5mcimFlDE6bQtzcoNCisNHgAAAYgoebFG";
 //        //when
-//        mockMvc.perform(get("/unauthorization/refresh")
-//                        .header("Authorization", "Bearer " + fresh_token)
+//        mockMvc.perform(get("/kakao-friends/{kakaoToken}?offset=0",kakaoToken)
 //                        .contentType(MediaType.APPLICATION_JSON)
-//                        .accept(MediaType.APPLICATION_JSON))
+//                        .accept(MediaType.APPLICATION_JSON)
+//                        .header("Authorization", "Bearer AccessToken"))
 //                //then
-//                .andExpect(status().is2xxSuccessful())
-//                .andDo(document("서버 토큰 재발급",
-//                        ResourceSnippetParameters.builder()
-//                                .tag("서버 토큰 재발급")
-//                                .summary("")
-//                                .description("refresh 토큰을 사용해서 access 토큰 재발급"),
+//                .andExpect(status().isNotFound())
+//                .andDo(document("친구 목록 조회",
 //                        preprocessRequest(prettyPrint()),
 //                        preprocessResponse(prettyPrint()),
-//                        requestHeaders(
-//                                headerWithName("Authorization").description("Bearer RefreshToken")
+//                        pathParameters(
+//                                parameterWithName("kakaoToken").description("카카오 엑세스 토큰")
 //                        ),
-//                        responseHeaders(
-//                                headerWithName("Authorization").description("Bearer AccessToken")
+//                        responseFields(
+//                                fieldWithPath("friendList[].userId").type(JsonFieldType.STRING).description("유저 아이디"),
+//                                fieldWithPath("friendList[].nickName").type(JsonFieldType.STRING).description("별명"),
+//                                fieldWithPath("friendList[].characterImage").type(JsonFieldType.STRING).description("캐릭터 이미지")
 //                        )
 //                ));
 //    }
+
+    @Test
+    @DisplayName("토큰 재발급")
+    @Transactional
+    void 토큰_재발급() throws Exception {
+        String fresh_token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyNzEzNTgyNDgyIiwiZXhwIjoxNjg2ODk4NDM3fQ.tvIcC2tu2vRz8c0RhHzPrHZ7e8alJsNNW_l0aLA2IiZjEhbs1xgrx_7S8ylDdCo9mG0FZuZrdYpbCghoOY9Z2g";
+        //when
+        mockMvc.perform(get("/unauthorization/refresh")
+                        .header("Authorization", "Bearer " + fresh_token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                //then
+                .andExpect(status().is2xxSuccessful())
+                .andDo(document("서버 토큰 재발급",
+                        ResourceSnippetParameters.builder()
+                                .tag("서버 토큰 재발급")
+                                .summary("")
+                                .description("refresh 토큰을 사용해서 access 토큰 재발급"),
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        requestHeaders(
+                                headerWithName("Authorization").description("Bearer RefreshToken")
+                        ),
+                        responseHeaders(
+                                headerWithName("Authorization").description("Bearer AccessToken")
+                        )
+                ));
+    }
 
 
 
@@ -248,31 +275,4 @@ class UserServiceApplicationTests {
                         )
                 ));
     }
-
-
-//    @Test
-//    @DisplayName("친구 정보 불러오기")
-//    void 친구_정보_불러오기() throws Exception {
-//        //given
-//        String kakaoToken = "qDNqG2vcgmd3ro1nttwxDMykUz-tVR2etQ1arhDCCisM0gAAAYgdt2cN";
-//        //when
-//        mockMvc.perform(get("/kakao-friends/{kakaoToken}?offset=0",kakaoToken)
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .accept(MediaType.APPLICATION_JSON)
-//                        .header("Authorization", "Bearer AccessToken"))
-//                //then
-//                .andExpect(status().isNotFound())
-//                .andDo(document("친구 목록 조회",
-//                        preprocessRequest(prettyPrint()),
-//                        preprocessResponse(prettyPrint()),
-//                        pathParameters(
-//                                parameterWithName("kakaoToken").description("카카오 엑세스 토큰")
-//                        ),
-//                        responseFields(
-//                                fieldWithPath("friendList[].userId").type(JsonFieldType.STRING).description("유저 아이디"),
-//                                fieldWithPath("friendList[].nickName").type(JsonFieldType.STRING).description("별명"),
-//                                fieldWithPath("friendList[].characterImage").type(JsonFieldType.STRING).description("캐릭터 이미지")
-//                        )
-//                ));
-//    }
 }
