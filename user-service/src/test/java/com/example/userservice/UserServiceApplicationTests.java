@@ -267,11 +267,19 @@ class UserServiceApplicationTests {
                 //then
                 .andExpect(status().isOk())
                 .andDo(document("컬렉션 조회",
+                        ResourceSnippetParameters.builder()
+                                .tag("컬렉션 조회")
+                                .summary("")
+                                .description("컬렉션 조회")
+                                .requestSchema(Schema.schema("Request.Collection")),
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
                                 fieldWithPath("[]").description("컬렉션 리스트")
-
+                        ).andWithPrefix("[].",
+                                fieldWithPath("characterId").type(JsonFieldType.NUMBER).description("캐릭터 아이디"),
+                                fieldWithPath("characterName").type(JsonFieldType.STRING).description("캐릭터 이름"),
+                                fieldWithPath("characterImageUrl").type(JsonFieldType.STRING).description("캐릭터 이미지")
                         )
                 ));
     }

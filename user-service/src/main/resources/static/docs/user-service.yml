@@ -10,7 +10,8 @@ paths:
   /collection:
     get:
       tags:
-      - collection
+      - 컬렉션 조회
+      description: 컬렉션 조회
       operationId: 컬렉션 조회
       responses:
         "200":
@@ -18,10 +19,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/collection1024043052'
+                $ref: '#/components/schemas/collection-1847347159'
               examples:
                 컬렉션 조회:
-                  value: "[ ]"
+                  value: |-
+                    [ {
+                      "characterId" : 1,
+                      "characterName" : "아기 문어",
+                      "characterImageUrl" : "https://octo-image-bucket.s3.ap-northeast-2.amazonaws.com/%E1%84%8B%E1%85%A1%E1%84%80%E1%85%B5%E1%84%86%E1%85%AE%E1%86%AB%E1%84%8B%E1%85%A5.png"
+                    } ]
   /msg/{stateMSG}:
     put:
       tags:
@@ -93,8 +99,8 @@ paths:
                 카카오 로그인 서비스:
                   value: |-
                     {
-                      "access_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyNzEzNTgyNDgyIiwiZXhwIjoxNjg0MzEwMDk5fQ.n103iAwyIaPcE3o7ZheEk-k3a6VahLOFuhYceXxaH6mBWb4Ghk-qr0ExGOZnlrUK-91qfZLMu9YmaAgaTUnbrA",
-                      "refresh_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyNzEzNTgyNDgyIiwiZXhwIjoxNjg2ODk4NDk5fQ.GU3_lWf7BEEqYGXJ1XO3VzB9mtIPNCkblj8G4ByDft_UZx4HraJLPvO8HYjlmhlQ8zHPOLzVfkpAgQe-r_WCng"
+                      "access_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyNzEzNTgyNDgyIiwiZXhwIjoxNjg0MzExNDg3fQ.oND9HQ3oyf0Bo06ynI1xzYcQAvIkiFksrVUkPP-GiRml8-LUO3tsVEFhK2r5n7_TKArfm2XGUpkjLcaqL5BrLw",
+                      "refresh_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyNzEzNTgyNDgyIiwiZXhwIjoxNjg2ODk5ODg3fQ.1n6FFKiUWYOsacmJN_CZVWKxt1UlRm9aZbPA1c55YsozH0Ls0VnxhSjwI_Zime5Mruvosqq9o9vfwmoRXDJ9zg"
                     }
   /unauthorization/refresh:
     get:
@@ -109,7 +115,7 @@ paths:
         required: true
         schema:
           type: string
-        example: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyNzEzNTgyNDgyIiwiZXhwIjoxNjg2ODk4NDM3fQ.tvIcC2tu2vRz8c0RhHzPrHZ7e8alJsNNW_l0aLA2IiZjEhbs1xgrx_7S8ylDdCo9mG0FZuZrdYpbCghoOY9Z2g
+        example: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyNzEzNTgyNDgyIiwiZXhwIjoxNjg2ODk5NjM3fQ.faRYKFpgVfZ3im09YVvKOOJEIlFI8hyjLksoNP7VvE54uFHlwqENl-EJqZEZAJpm_4nPCMsM-wo7Qt2hSvC9sQ
       responses:
         "201":
           description: "201"
@@ -180,15 +186,22 @@ components:
         userId:
           type: number
           description: 유저 아이디
-    collection1024043052:
+    collection-1847347159:
       type: array
       description: 컬렉션 리스트
       items:
-        oneOf:
-        - type: object
-        - type: boolean
-        - type: string
-        - type: number
+        type: object
+        properties:
+          characterName:
+            type: string
+            description: 캐릭터 이름
+          characterImageUrl:
+            type: string
+            description: 캐릭터 이미지
+          characterId:
+            type: number
+            description: 캐릭터 아이디
+        description: 컬렉션 리스트
     Response.Tokens:
       title: Response.Tokens
       type: object
