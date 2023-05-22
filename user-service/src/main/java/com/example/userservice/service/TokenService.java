@@ -40,6 +40,7 @@ public class TokenService {
     public TokenSet createTokenSet(Long userId){
         long now = (new Date()).getTime();
         Date validity = new Date(now + expiration_time);   //만료 시간
+        validity = Date.from(Instant.now().plus(Duration.ofDays(30)));    //test 용으로 토큰 기간 연장
 
         //엑세스 토큰 발급
         String accessToken = createToken(userId, validity);
