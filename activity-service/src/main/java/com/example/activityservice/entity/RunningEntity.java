@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.util.Date;
 
 @Entity
 @Data
@@ -22,7 +22,7 @@ public class RunningEntity {
     private Long userId;
 
     @Column(name = "CREATED_TIME")
-    private Timestamp createdTime;
+    private Date createdTime;
 
     @Column(name = "TOTAL_RUNNING_TIME")
     private int totalRunningTime;

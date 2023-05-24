@@ -14,7 +14,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -28,12 +28,12 @@ public class DiaryController {
     /**다이어리 작성*/
     @PostMapping("/diary")
     public HttpStatus writeDiary(@RequestParam("id") Long userId, @RequestBody String content){
+        content = content.replaceAll("^\"|\"$", "");
         DiaryEntity diary = DiaryEntity.builder()
                                         .userId(userId)
                                         .content(content)
                                         .createdTime(new Date(System.currentTimeMillis()))
                                         .build();
-
         diaryRepository.save(diary);
 
         return HttpStatus.CREATED;

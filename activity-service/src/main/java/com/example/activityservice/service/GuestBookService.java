@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -23,7 +23,7 @@ public class GuestBookService {
 
     /**방명록 작성*/
     public HttpStatus createGuestBook(GuestBookEntity guestBook) {
-        guestBook.setCreatedTime(new Timestamp(System.currentTimeMillis()));
+        guestBook.setCreatedTime(new Date(System.currentTimeMillis()));
         guestBook.setRead(false);
         guestBookRepository.save(guestBook);
         return HttpStatus.CREATED;
@@ -55,7 +55,7 @@ public class GuestBookService {
 
     /**방명록 수정*/
     public GuestBookEntity modifyGuestBookById(GuestBookEntity guestBookEntity) {
-        guestBookEntity.setCreatedTime(new Timestamp(System.currentTimeMillis()));
+        guestBookEntity.setCreatedTime(new Date(System.currentTimeMillis()));
         return guestBookRepository.save(guestBookEntity);
 
     }

@@ -4,7 +4,7 @@ import com.example.activityservice.entity.RunningEntity;
 import com.example.activityservice.repository.RunningRepository;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 

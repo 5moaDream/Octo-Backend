@@ -6,7 +6,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.sql.Timestamp;
+import java.util.Date;
 
 @Table(name = "GUESTBOOK_TB")
 @Entity
@@ -37,5 +37,5 @@ public class GuestBookEntity {
     private boolean read;
 
     @Column(name = "CREATED_TIME")
-    private Timestamp createdTime;
+    private Date createdTime;
 }
