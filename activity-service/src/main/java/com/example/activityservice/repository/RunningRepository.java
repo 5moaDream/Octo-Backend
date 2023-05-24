@@ -16,8 +16,8 @@ public interface RunningRepository extends JpaRepository<RunningEntity, Long>, J
 
     List<RunningEntity> findAllByCreatedTimeBetweenAndUserId(Date startDate, Date endDate, Long userId);
 
-    @Query("SELECT rt FROM RunningEntity rt WHERE FUNCTION('DATE_FORMAT', rt.createdTime, '%Y-%m-%d') = FUNCTION('CURDATE')")
-    List<RunningEntity> findTodayRunningById(Long userId);
+    @Query("SELECT rt FROM RunningEntity rt WHERE FUNCTION('DATE_FORMAT', rt.createdTime, '%Y-%m-%d') = FUNCTION('CURDATE') AND rt.userId = :userId")
+    List<RunningEntity> findTodayRunningById(@Param("userId") Long userId);
 
     @Query("SELECT DATE(r.createdTime), ROUND(SUM(r.distance), 1) " +
             "FROM RunningEntity r " +
