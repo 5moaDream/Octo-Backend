@@ -26,7 +26,7 @@ public class DiaryController {
 
 
     /**다이어리 작성*/
-    @PutMapping("/diary")
+    @PostMapping("/diary")
     public HttpStatus writeDiary(@RequestParam("id") Long userId, @RequestBody String content){
         DiaryEntity diary = DiaryEntity.builder()
                                         .userId(userId)
@@ -37,6 +37,13 @@ public class DiaryController {
         diaryRepository.save(diary);
 
         return HttpStatus.CREATED;
+    }
+
+    /**다이어리 조회*/
+    @GetMapping("/diary")
+    public ResponseEntity<List<DiaryEntity>> findDiary(@RequestParam("id") Long userId){
+        List<DiaryEntity> diarys = diaryRepository.findAllByUserId(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(diarys);
     }
 
     /**모든 기록 조회*/

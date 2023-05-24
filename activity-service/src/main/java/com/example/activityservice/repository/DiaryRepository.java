@@ -20,4 +20,5 @@ public interface DiaryRepository extends JpaRepository<DiaryEntity, Long> {
             "ORDER BY DATE(d.createdTime) ASC")
     List<Object> findDiaryByDate(@Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("userId") Long userId);
 
+    List<DiaryEntity> findAllByUserId(Long userId);
 }
