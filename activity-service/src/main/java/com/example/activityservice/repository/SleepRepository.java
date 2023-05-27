@@ -1,5 +1,6 @@
 package com.example.activityservice.repository;
 
+import com.example.activityservice.entity.RunningEntity;
 import com.example.activityservice.entity.SleepEntity;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,6 +16,8 @@ import java.util.List;
 public interface SleepRepository extends JpaRepository<SleepEntity, Long>, JpaSpecificationExecutor<SleepEntity> {
     @Query("SELECT st FROM SleepEntity st WHERE FUNCTION('DATE_FORMAT', st.wakeUpTime, '%Y-%m-%d') = FUNCTION('CURDATE')")
     SleepEntity findTodaySleepByUserId(Long userId);
+
+    List<SleepEntity> findAllBySleptTimeBetweenAndUserId(Date startDate, Date endDate, Long userId);
 
     List<SleepEntity> findAllByUserId(Long userId, Pageable pageable);
 

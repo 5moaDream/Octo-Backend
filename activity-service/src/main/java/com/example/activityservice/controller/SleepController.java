@@ -29,10 +29,17 @@ public class SleepController {
         return HttpStatus.CREATED;
     }
     /**당일 수면 시간 조회*/
-    @GetMapping("/sleep")
+    @GetMapping("/sleep/today")
     public ResponseEntity<SleepEntity> findTodaySleep(@RequestParam("id") Long userId){
         SleepEntity result = sleepService.findTodaySleepByUserId(userId);
         return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    /**최근 7일간 수면 기록 조회*/
+    @GetMapping("/sleep/week")
+    public ResponseEntity<List<SleepEntity>> findWeekSleep(@RequestParam("id") Long userId){
+        List<SleepEntity> responseSleeps = sleepService.findWeekSleepById(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(responseSleeps);
     }
 
     /**모든 수면 기록 조회*/
