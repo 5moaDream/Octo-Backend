@@ -21,7 +21,7 @@ public class KakaoService {
     private final String TOKEN_URI = "https://kauth.kakao.com/oauth/token";
 
     private final String REDIRECT_URI = "http://3.39.126.140:8000/unauthorization/code";
-    private final String CLIENT_ID = "09201921cd5e210ee03ddd019e256454";
+    private final String CLIENT_ID = "86aba9aec0985787d071adc7c329635d";
     private final String GRANT_TYPE = "authorization_code";
 
     private final WebClient webClient = WebClient.create();

@@ -23,7 +23,6 @@ public class UserService {
         UserEntity user = UserEntity.builder()
                 .userId(kakaoUserDTO.getId())
                 .thumbnailImageUrl(kakaoUserDTO.getKakao_account().getProfile().getThumbnail_image_url())
-                .characterName("나의 문어")
                 .characterUrl(basicCharUrl)
                 .experienceValue(0)
                 .build();
@@ -85,7 +84,7 @@ public class UserService {
         for (UserEntity u : userList) {
             for (KakaoFriend.Friend k : friends.getFriends()) {
                 if (k.getId() == u.getUserId()) {
-                    FriendDTO friend = new FriendDTO(u.getUserId(), k.getProfile_nickname(), u.getCharacterUrl());
+                    FriendDTO friend = new FriendDTO(u.getUserId(), k.getProfile_nickname(), u.getCharacterUrl(), u.getThumbnailImageUrl());
                     responseFriendList.add(friend);
                     break;
                 }
