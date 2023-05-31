@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 public class KakaoFriend {
     private Integer total_count;
-    private Friend[] friends;
+    private Friend[] elements;
 
     @Setter
     @Getter

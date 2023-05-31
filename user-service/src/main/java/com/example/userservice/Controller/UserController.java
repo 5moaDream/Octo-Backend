@@ -133,7 +133,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
         //카카오 친구 조회에 성공했지만 친구가 없을 때
-        else if(responseFriends.getFriends() == null)
+        else if(responseFriends.getElements() == null)
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 
         List<FriendDTO> result =  userService.getFriends(responseFriends);

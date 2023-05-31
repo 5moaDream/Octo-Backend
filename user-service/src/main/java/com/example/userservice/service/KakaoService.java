@@ -72,9 +72,13 @@ public class KakaoService {
 
     /**카카오 친구 목록 조회*/
     public KakaoFriend getKakaoFriends(String accessToken) {
-        return WebClient.create().get()
+        KakaoFriend kakaoFriend =  WebClient.create().get()
                 .uri(FRIENDS_INFO_URI)
                 .header("Authorization", "Bearer " + accessToken)
                 .retrieve().bodyToFlux(KakaoFriend.class).blockFirst();
+
+        log.info("카카오 친구목록 : " + kakaoFriend);
+
+        return kakaoFriend;
     }
 }
