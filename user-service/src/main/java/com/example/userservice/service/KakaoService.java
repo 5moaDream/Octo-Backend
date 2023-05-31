@@ -4,6 +4,7 @@ import com.example.userservice.dto.KakaoFriend;
 import com.example.userservice.dto.KakaoTokenDTO;
 import com.example.userservice.dto.KakaoUserDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -15,6 +16,7 @@ import reactor.core.publisher.Mono;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class KakaoService {
     private final String FRIENDS_INFO_URI = "https://kapi.kakao.com/v1/api/talk/friends";
     private final String USER_INFO_URI = "https://kapi.kakao.com/v2/user/me";
@@ -32,11 +34,15 @@ public class KakaoService {
     public KakaoTokenDTO getKakaoToken(String code) {
         String uri = TOKEN_URI + "?grant_type=" + GRANT_TYPE + "&client_id=" + CLIENT_ID + "&redirect_uri=" + REDIRECT_URI + "&code=" + code;
 
+        log.info("URI: " + uri);
+
         Flux<KakaoTokenDTO> response = webClient.post()
                 .uri(uri)
                 .contentType(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToFlux(KakaoTokenDTO.class);
+
+        log.info("카카오 토큰: " + response.toString());
 
         return response.blockFirst();
     }
