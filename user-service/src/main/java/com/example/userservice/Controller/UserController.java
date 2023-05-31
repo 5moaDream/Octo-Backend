@@ -126,8 +126,8 @@ public class UserController {
 
     /**친구 정보 불러오기*/
     @GetMapping("/kakao-friends/{accessToken}")
-    public ResponseEntity<List<FriendDTO>> findKakaoFriendsList(@PathVariable String accessToken, @RequestParam("offset") int offset){
-        KakaoFriend responseFriends = kakaoService.getKakaoFriends(accessToken, offset);
+    public ResponseEntity<List<FriendDTO>> findKakaoFriendsList(@PathVariable String accessToken){
+        KakaoFriend responseFriends = kakaoService.getKakaoFriends(accessToken);
 
         if(responseFriends == null)
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
