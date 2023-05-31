@@ -69,7 +69,7 @@ public class UserService {
      * 친구 조회(카카오 친구로)
      */
     public List<FriendDTO> getFriends(KakaoFriend friends) {
-        KakaoFriend.Friend[] friendArray = friends.getFriends();
+        KakaoFriend.Friend[] friendArray = friends.getElements();
         List<Long> friendIds = new ArrayList<>();
         List<FriendDTO> responseFriendList = new ArrayList<>();
 
@@ -82,7 +82,7 @@ public class UserService {
 
         //유저 DTO list 생성
         for (UserEntity u : userList) {
-            for (KakaoFriend.Friend k : friends.getFriends()) {
+            for (KakaoFriend.Friend k : friends.getElements()) {
                 if (k.getId() == u.getUserId()) {
                     FriendDTO friend = new FriendDTO(u.getUserId(), k.getProfile_nickname(), u.getCharacterUrl(), u.getThumbnailImageUrl());
                     responseFriendList.add(friend);
