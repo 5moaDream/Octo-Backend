@@ -90,6 +90,8 @@ dependencies {
 //    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     testImplementation 'com.epages:restdocs-api-spec-mockmvc:0.16.2'
+
+    implementation 'com.google.code.gson:gson:2.8.7'
 }
 
 dependencyManagement {

@@ -110,6 +110,12 @@ public class UserController {
         return HttpStatus.OK;
     }
 
+    /**캐릭터 변경*/
+    @PutMapping("/character")
+    public HttpStatus updateCharacter(@RequestParam("id") Long userId, @RequestBody CharacterEntity character){
+        userService.updateCharacter(userId, character.getCharacterImageUrl());
+        return HttpStatus.OK;
+    }
 
 
     /**컬렉션 조회*/
@@ -124,18 +130,11 @@ public class UserController {
 
 
 
+
     /**친구 정보 불러오기*/
     @GetMapping("/kakao-friends/{accessToken}")
     public ResponseEntity<List<FriendDTO>> findKakaoFriendsList(@PathVariable String accessToken){
         KakaoFriend responseFriends = kakaoService.getKakaoFriends(accessToken);
-
-        if(responseFriends == null)
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-
-        //카카오 친구 조회에 성공했지만 친구가 없을 때
-        else if(responseFriends.getElements() == null)
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-
         List<FriendDTO> result =  userService.getFriends(responseFriends);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }

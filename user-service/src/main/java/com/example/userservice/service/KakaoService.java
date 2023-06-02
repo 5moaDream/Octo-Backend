@@ -3,6 +3,9 @@ package com.example.userservice.service;
 import com.example.userservice.dto.KakaoFriend;
 import com.example.userservice.dto.KakaoTokenDTO;
 import com.example.userservice.dto.KakaoUserDTO;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -72,12 +75,14 @@ public class KakaoService {
 
     /**카카오 친구 목록 조회*/
     public KakaoFriend getKakaoFriends(String accessToken) {
-        KakaoFriend kakaoFriend =  WebClient.create().get()
+        Gson gson = new Gson();
+
+        String jsonResponse = WebClient.create().get()
                 .uri(FRIENDS_INFO_URI)
                 .header("Authorization", "Bearer " + accessToken)
-                .retrieve().bodyToFlux(KakaoFriend.class).blockFirst();
+                .retrieve().bodyToFlux(String.class).blockFirst();
 
-        log.info("카카오 친구목록 : " + kakaoFriend);
+        KakaoFriend kakaoFriend = gson.fromJson(jsonResponse, KakaoFriend.class);
 
         return kakaoFriend;
     }
