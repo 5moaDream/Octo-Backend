@@ -90,7 +90,7 @@ public class UserService {
         for (UserEntity u : userList) {
             for (KakaoFriend.Friend k : friends.getElements()) {
                 if (k.getId() == u.getUserId()) {
-                    FriendDTO friend = new FriendDTO(u.getUserId(), k.getProfile_nickname(), u.getCharacterUrl(), k.getProfile_thumbnail_image());
+                    FriendDTO friend = new FriendDTO(u.getUserId(), k.getProfile_nickname(), u.getCharacterUrl(), u.getCharacterName(), k.getProfile_thumbnail_image(), u.getStateMsg());
                     responseFriendList.add(friend);
                     break;
                 }
