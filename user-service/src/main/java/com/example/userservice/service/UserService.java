@@ -14,7 +14,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-    private final String basicCharUrl = "https://octo-image-bucket.s3.ap-northeast-2.amazonaws.com/%E1%84%8B%E1%85%A1%E1%84%80%E1%85%B5%E1%84%86%E1%85%AE%E1%86%AB%E1%84%8B%E1%85%A5.png";
+    private final String basicCharUrl = "https://octo-image-bucket.s3.ap-northeast-2.amazonaws.com/%E1%84%8B%E1%85%A1%E1%84%80%E1%85%B5+%E1%84%86%E1%85%AE%E1%86%AB%E1%84%8B%E1%85%A5.png";
 
     /**
      * 유저 생성
